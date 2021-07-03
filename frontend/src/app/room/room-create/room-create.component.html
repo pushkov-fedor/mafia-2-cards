@@ -48,5 +48,13 @@
       >Должен быть положительным</mat-error
     >
   </mat-form-field>
-  <button mat-raised-button color="primary" class="w-100 mt-4">СОЗДАТЬ</button>
+  <button
+    mat-raised-button
+    color="primary"
+    class="w-100 mt-4"
+    [disabled]="!formGroup.valid"
+    (click)="onRoomCreateClick()"
+  >
+    СОЗДАТЬ
+  </button>
 </div>

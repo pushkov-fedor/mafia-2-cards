@@ -1,8 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { NavigationEnd, Router, RouterEvent } from '@angular/router';
+import { filter } from 'rxjs/operators';
+
+interface RouterPath {
+  path: string;
+  title: string;
+  hasBackBtn: boolean;
+}
+
+const routes: RouterPath[] = [
+  {
+    path: '/room',
+    title: 'Главная',
+    hasBackBtn: false,
+  },
+  {
+    path: '/room/create',
+    title: 'Создание комнаты',
+    hasBackBtn: true,
+  },
+];
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+  constructor(private router: Router, private location: Location) {}
+
+  currentRoute?: RouterPath;
+
+  ngOnInit() {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        this.currentRoute = routes.find(
+          (route) => route.path == (event as RouterEvent).url,
+        );
+      });
+  }
+
+  onBackClick() {
+    this.location.back();
+  }
+}

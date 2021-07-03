@@ -1,4 +1,13 @@
 <mat-toolbar color="primary">
-  <span>Добро пожаловать</span>
+  <button
+    mat-icon-button
+    class="example-icon arrow_back_ios_new-icon"
+    aria-label="Example icon-button with heart icon"
+    *ngIf="currentRoute?.hasBackBtn"
+    (click)="onBackClick()"
+  >
+    <mat-icon>arrow_back_ios_new</mat-icon>
+  </button>
+  <span>{{ currentRoute?.title }}</span>
 </mat-toolbar>
 <router-outlet></router-outlet>

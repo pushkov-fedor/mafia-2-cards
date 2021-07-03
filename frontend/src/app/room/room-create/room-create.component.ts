@@ -22,4 +22,6 @@ export class RoomCreateComponent {
       Validators.min(0),
     ]),
   });
+
+  onRoomCreateClick() {}
 }
