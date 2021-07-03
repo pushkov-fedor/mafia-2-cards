@@ -1,19 +1,52 @@
-<div class="container">
+<div class="container" [formGroup]="formGroup">
   <mat-form-field appearance="standard" class="w-100">
     <mat-label>Как вас зовут?</mat-label>
-    <input matInput placeholder="Davai" />
+    <input matInput placeholder="Davai" formControlName="name" />
+    <mat-error *ngIf="formGroup.controls.name.hasError('required')"
+      >Обязательное поле</mat-error
+    >
   </mat-form-field>
   <mat-form-field appearance="standard" class="w-100">
     <mat-label>Количество человек</mat-label>
-    <input matInput placeholder="9" type="number" />
+    <input
+      matInput
+      placeholder="9"
+      type="number"
+      formControlName="numberOfPlayers"
+    />
+    <mat-error *ngIf="formGroup.controls.numberOfPlayers.hasError('required')"
+      >Обязательное поле</mat-error
+    ><mat-error *ngIf="formGroup.controls.numberOfPlayers.hasError('min')"
+      >Минимум 4</mat-error
+    >
   </mat-form-field>
   <mat-form-field appearance="standard" class="w-100">
     <mat-label>Мафия</mat-label>
-    <input matInput placeholder="2" type="number" />
+    <input
+      matInput
+      placeholder="2"
+      type="number"
+      formControlName="numberOfMafia"
+    />
+    <mat-error *ngIf="formGroup.controls.numberOfMafia.hasError('required')"
+      >Обязательное поле</mat-error
+    ><mat-error *ngIf="formGroup.controls.numberOfMafia.hasError('min')"
+      >Минимум 1</mat-error
+    >
   </mat-form-field>
   <mat-form-field appearance="standard" class="w-100">
     <mat-label>Комиссар</mat-label>
-    <input matInput placeholder="1" type="number" />
+    <input
+      matInput
+      placeholder="1"
+      type="number"
+      formControlName="numberOfPolices"
+    />
+    <mat-error *ngIf="formGroup.controls.numberOfPolices.hasError('required')"
+      >Обязательное поле</mat-error
+    ><mat-error *ngIf="formGroup.controls.numberOfPolices.hasError('min')"
+      >Должен быть положительным</mat-error
+    >
   </mat-form-field>
   <button mat-raised-button color="primary" class="w-100 mt-4">СОЗДАТЬ</button>
 </div>
