@@ -1,3 +1,4 @@
+import { AlertComponent } from './components/alert/alert.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Material Form Controls
@@ -43,7 +44,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
-  declarations: [],
+  declarations: [AlertComponent],
   imports: [
     CommonModule,
     MatAutocompleteModule,
@@ -118,6 +119,7 @@ import { MatTableModule } from '@angular/material/table';
     MatPaginatorModule,
     MatSortModule,
     MatTableModule,
+    AlertComponent,
   ],
 })
 export class SharedModule {}

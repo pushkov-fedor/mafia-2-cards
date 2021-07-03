@@ -1,3 +1,4 @@
+import { CommonService } from './common.service';
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { NavigationEnd, Router, RouterEvent } from '@angular/router';
@@ -28,7 +29,11 @@ const routes: RouterPath[] = [
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(private router: Router, private location: Location) {}
+  constructor(
+    private router: Router,
+    private location: Location,
+    private commonService: CommonService,
+  ) {}
 
   currentRoute?: RouterPath;
 
@@ -40,6 +45,8 @@ export class AppComponent implements OnInit {
           (route) => route.path == (event as RouterEvent).url,
         );
       });
+
+    this.commonService.openAlertModal({ message: 'SOSI' });
   }
 
   onBackClick() {
