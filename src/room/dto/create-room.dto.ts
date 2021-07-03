@@ -6,7 +6,6 @@ import {
   Max,
   Min,
   Validate,
-  ValidateBy,
 } from 'class-validator';
 
 export class CreateRoomDto {
