@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Player } from './model/player.model';
+import { RoomStatus } from './model/room-status.model';
 import { Room } from './model/room.model';
 
 @Injectable()
@@ -12,12 +13,23 @@ export class RoomService {
     numberOfPolices: number,
     creatorName: string,
   ) {
-    const creator = new Player(creatorName);
-    const room = new Room(numberOfPlayers, numberOfMafia, numberOfPolices, [
-      creator,
-    ]);
+    const creator = new Player(creatorName, true);
+    const room = new Room(numberOfPlayers, numberOfMafia, numberOfPolices);
+    room.addPlayer(creator);
     this.rooms.push(room);
     return room;
+  }
+
+  join(code: string, playerName: string) {
+    const room = this.rooms.find((room) => room.code == code);
+    if (!room) {
+      return;
+    }
+    if (room.roomStatus == RoomStatus.PENDING && room.hasSlotForPlayer()) {
+      const player = new Player(playerName);
+      room.addPlayer(player);
+      return room;
+    }
   }
 
   getAll() {

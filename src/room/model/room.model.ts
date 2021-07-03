@@ -4,19 +4,27 @@ import { nanoid } from 'nanoid';
 import * as cryptoRandomString from 'crypto-random-string';
 
 export class Room {
-  private id: string;
-  private code: string;
-  private roomStatus = RoomStatus.PENDING;
+  public id: string;
+  public code: string;
+  public roomStatus = RoomStatus.PENDING;
+  public players: Player[] = [];
   constructor(
-    private numberOfPlayers: number,
-    private numberOfMafia: number,
-    private numberOfPolices: number,
-    private players: Player[] = [],
+    public numberOfPlayers: number,
+    public numberOfMafia: number,
+    public numberOfPolices: number,
   ) {
     this.code = cryptoRandomString({
       length: 4,
       type: 'distinguishable',
     });
     this.id = nanoid();
+  }
+
+  addPlayer(player: Player) {
+    this.players.push(player);
+  }
+
+  hasSlotForPlayer() {
+    return this.players.length < this.numberOfPlayers;
   }
 }
