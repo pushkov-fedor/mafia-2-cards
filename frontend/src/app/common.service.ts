@@ -1,8 +1,11 @@
-import { browser } from 'protractor';
 import { AlertComponent } from './shared/components/alert/alert.component';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Injectable, InjectionToken, Injector } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
+import {
+  ALERT_MODAL_MESSAGE,
+  ALERT_OVERLAY_REF,
+} from './shared/tokens/alert.tokens';
 
 interface AlertModalConfig {
   panelClass?: string;
@@ -16,13 +19,6 @@ const DEFAULT_CONFIG: AlertModalConfig = {
   backdropClass: 'dark-backdrop',
   panelClass: 'panel',
 };
-
-export const ALERT_MODAL_MESSAGE = new InjectionToken<string>(
-  'ALERT_MODAL_MESSAGE',
-);
-export const ALERT_OVERLAY_REF = new InjectionToken<OverlayRef>(
-  'ALERT_OVERLAY_REF',
-);
 
 @Injectable({
   providedIn: 'root',

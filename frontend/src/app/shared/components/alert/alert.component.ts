@@ -1,9 +1,9 @@
 import { OverlayRef } from '@angular/cdk/overlay';
+import { Component, Inject } from '@angular/core';
 import {
   ALERT_MODAL_MESSAGE,
   ALERT_OVERLAY_REF,
-} from './../../../common.service';
-import { Component, Inject } from '@angular/core';
+} from '../../tokens/alert.tokens';
 
 @Component({
   selector: 'alert',
