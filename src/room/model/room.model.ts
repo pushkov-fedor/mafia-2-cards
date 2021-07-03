@@ -18,6 +18,12 @@ export class Room {
       type: 'distinguishable',
     });
     this.id = nanoid();
+
+    setTimeout(() => {
+      if (this.roomStatus == RoomStatus.PENDING) {
+        this.roomStatus = RoomStatus.CANCELED;
+      }
+    }, 1000 * 60 * 5);
   }
 
   addPlayer(player: Player) {
