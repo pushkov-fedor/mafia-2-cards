@@ -12,13 +12,13 @@ export class CreateRoomDto {
 export class RoomController {
   constructor(private roomService: RoomService) {}
   @Get()
-  getRoom(): string {
-    return 'Response from roomController getRoom method';
+  getRoom() {
+    return this.roomService.getAll();
   }
 
   @Post('create')
   createRoom(@Body() createRoomDto: CreateRoomDto) {
     const { players, mafia, polices, creatorName } = createRoomDto;
-    return this.roomService.createRoom(players, mafia, polices, creatorName);
+    return this.roomService.create(players, mafia, polices, creatorName);
   }
 }

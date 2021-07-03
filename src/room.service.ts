@@ -9,9 +9,16 @@ export class Player {
   }
 }
 
+export enum RoomStatus {
+  PENDING,
+  ACTIVE,
+  CANCELED,
+}
+
 export class Room {
   private id: string;
   private code: string;
+  private roomStatus = RoomStatus.PENDING;
   constructor(
     private numberOfPlayers: number,
     private numberOfMafia: number,
@@ -30,7 +37,7 @@ export class Room {
 export class RoomService {
   private rooms: Room[] = [];
 
-  createRoom(
+  create(
     numberOfPlayers: number,
     numberOfMafia: number,
     numberOfPolices: number,
@@ -42,5 +49,9 @@ export class RoomService {
     ]);
     this.rooms.push(room);
     return room;
+  }
+
+  getAll() {
+    return this.rooms;
   }
 }
