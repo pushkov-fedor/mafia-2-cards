@@ -21,7 +21,7 @@ export class RoomService {
   }
 
   join(code: string, playerName: string) {
-    const room = this.rooms.find((room) => room.code == code);
+    const room = this.getByCode(code);
     if (!room) {
       return;
     }
@@ -34,5 +34,11 @@ export class RoomService {
 
   getAll() {
     return this.rooms;
+  }
+
+  getByCode(code: string) {
+    return this.rooms.find(
+      (room) => room.code.toLowerCase() == code.toLowerCase(),
+    );
   }
 }

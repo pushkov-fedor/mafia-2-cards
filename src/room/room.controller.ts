@@ -1,5 +1,5 @@
 import { RoomService } from './room.service';
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { JoinRoomDto } from './dto/join-room.dto';
 
@@ -7,8 +7,13 @@ import { JoinRoomDto } from './dto/join-room.dto';
 export class RoomController {
   constructor(private roomService: RoomService) {}
   @Get()
-  getRoom() {
+  getRooms() {
     return this.roomService.getAll();
+  }
+
+  @Get(':code')
+  getRoom(@Param('code') code: string) {
+    return this.roomService.getByCode(code);
   }
 
   @Post('create')
