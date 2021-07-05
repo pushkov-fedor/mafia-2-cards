@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
         );
       });
 
-    this.commonService.openAlertModal({ message: 'SOSI' });
+    // this.commonService.openAlertModal({ message: 'SOSI' });
   }
 
   onBackClick() {

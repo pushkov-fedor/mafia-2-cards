@@ -28,21 +28,19 @@ export class CommonService {
   overlayRef?: OverlayRef;
 
   openAlertModal(config: AlertModalConfig = {}) {
-    if (!this.overlayRef) {
-      const modalConfig = { ...DEFAULT_CONFIG, ...config };
-      this.overlayRef = this.createOverlay(modalConfig);
+    const modalConfig = { ...DEFAULT_CONFIG, ...config };
+    this.overlayRef = this.createOverlay(modalConfig);
 
-      const injector = this.createInjector(config, this.overlayRef);
-      const alertModalPortal = new ComponentPortal(
-        AlertComponent,
-        null,
-        injector,
-      );
+    const injector = this.createInjector(config, this.overlayRef);
+    const alertModalPortal = new ComponentPortal(
+      AlertComponent,
+      null,
+      injector,
+    );
 
-      this.overlayRef.attach(alertModalPortal);
+    this.overlayRef.attach(alertModalPortal);
 
-      this.overlayRef.backdropClick().subscribe(() => this.closeAlertModal());
-    }
+    this.overlayRef.backdropClick().subscribe(() => this.closeAlertModal());
   }
 
   closeAlertModal() {
