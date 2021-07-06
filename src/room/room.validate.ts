@@ -11,6 +11,8 @@ export interface RoomValidationConfig {
 
 export class RoomValidate {
   validate(room: Room, config: RoomValidationConfig) {
+    if (!config) return true;
+
     if (config.isExist && !room) {
       throw new HttpException(
         'Комната с таким кодом не найдена',

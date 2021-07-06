@@ -1,3 +1,4 @@
+import { Player } from './../../shared/models/player.model';
 import { Room, RoomStatus } from './../../shared/models/room.model';
 import { RoomService } from './../room.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -19,11 +20,13 @@ export class RoomWaitComponent implements OnInit, OnDestroy {
   ) {}
 
   room: Room;
+  player: Player;
 
   intervalSub: Subscription;
 
   ngOnInit(): void {
     this.roomService.room.subscribe((room) => (this.room = room));
+    this.player = this.roomService.player.getValue();
     if (!this.room) {
       this.router.navigate(['room']);
       return;
@@ -33,12 +36,12 @@ export class RoomWaitComponent implements OnInit, OnDestroy {
         switchMap(() =>
           this.roomService.get(this.room.code, {
             isExistValidate: 'true',
-            isActiveValidate: 'true',
             isCancelValidate: 'true',
           }),
         ),
         catchError((err) => {
           this.commonService.openAlertModal({ message: err.error.message });
+          this.router.navigate(['room']);
           return throwError(err);
         }),
       )
@@ -48,6 +51,6 @@ export class RoomWaitComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.intervalSub.unsubscribe();
+    this.intervalSub?.unsubscribe();
   }
 }

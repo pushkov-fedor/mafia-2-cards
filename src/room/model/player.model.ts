@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid';
 
 export class Player {
   private id: string;
-  constructor(private name: string, private isRoomCreator: boolean = false) {
+  constructor(public name: string, public isRoomCreator: boolean = false) {
     this.id = nanoid();
   }
 }

@@ -1,7 +1,8 @@
+import { Player } from './../shared/models/player.model';
 import { BASE_URL } from './../constants';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Room } from '../shared/models/room.model';
 
 @Injectable({
@@ -11,6 +12,7 @@ export class RoomService {
   constructor(private http: HttpClient) {}
 
   room = new BehaviorSubject<Room>(null);
+  player = new BehaviorSubject<Player>(null);
 
   createRoom(
     creatorName: string,
@@ -18,7 +20,7 @@ export class RoomService {
     mafia: number,
     polices: number,
   ) {
-    return this.http.post<Room>(
+    return this.http.post<{ room: Room; player: Player }>(
       `${BASE_URL}room/create`,
       {
         creatorName,
@@ -36,10 +38,13 @@ export class RoomService {
   }
 
   joinRoom(code: string, playerName: string) {
-    return this.http.post<Room>(`${BASE_URL}room/join`, {
-      code,
-      playerName,
-    });
+    return this.http.post<{ room: Room; player: Player }>(
+      `${BASE_URL}room/join`,
+      {
+        code,
+        playerName,
+      },
+    );
   }
 
   getAll() {

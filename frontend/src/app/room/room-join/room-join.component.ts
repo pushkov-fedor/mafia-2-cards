@@ -34,8 +34,9 @@ export class RoomJoinComponent {
           return throwError(err);
         }),
       )
-      .subscribe((room) => {
+      .subscribe(({ room, player }) => {
         this.roomService.room.next(room);
+        this.roomService.player.next(player);
         this.router.navigate(['../wait'], {
           relativeTo: this.route,
         });

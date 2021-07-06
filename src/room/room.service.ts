@@ -4,6 +4,7 @@ import { Player } from './model/player.model';
 import { RoomStatus } from './model/room-status.model';
 import { Room } from './model/room.model';
 import { CreateRoomResponse } from './response/create-room.response';
+import { JoinRoomResponse } from './response/join-room.response';
 
 @Injectable()
 export class RoomService {
@@ -31,9 +32,14 @@ export class RoomService {
       isCancelled: true,
       hasSlotsForPlayer: true,
     });
-    const player = new Player(playerName);
-    room.addPlayer(player);
-    return room;
+    const player = room.players.find((player) => player.name == playerName);
+    if (player) {
+      return new JoinRoomResponse(room, player);
+    } else {
+      const newPlayer = new Player(playerName);
+      room.addPlayer(newPlayer);
+      return new JoinRoomResponse(room, newPlayer);
+    }
   }
 
   getAll() {

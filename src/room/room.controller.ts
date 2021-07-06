@@ -58,11 +58,6 @@ export class RoomController {
   @Post('join')
   joinRoom(@Body() joinRoomDto: JoinRoomDto) {
     const { code, playerName } = joinRoomDto;
-    try {
-      const room = this.roomService.join(code, playerName);
-      return room;
-    } catch (e) {
-      throw e;
-    }
+    return this.roomService.join(code, playerName);
   }
 }
