@@ -1,0 +1,48 @@
+.container {
+  text-align: center;
+  .room-code {
+    margin-top: 35px;
+    h3 {
+      font-size: 31px;
+      opacity: 0.75;
+    }
+
+    h2 {
+      font-size: 39px;
+      font-weight: bold;
+    }
+  }
+
+  .players-list {
+    margin-top: 35px;
+    h4 {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    span.number-of-players {
+      font-size: 25px;
+      margin-bottom: 30px;
+      display: inline-block;
+    }
+
+    .player-list-item {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+
+      mat-icon {
+        padding: 12px;
+        background-color: white;
+        box-sizing: content-box;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      span.name {
+        font-size: 18px;
+        font-weight: bold;
+      }
+    }
+  }
+}

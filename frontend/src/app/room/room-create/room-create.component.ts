@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { catchError } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'room-create',
@@ -14,6 +15,8 @@ export class RoomCreateComponent {
   constructor(
     private roomService: RoomService,
     private commonService: CommonService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   formGroup = new FormGroup({
@@ -53,6 +56,11 @@ export class RoomCreateComponent {
           return throwError(err);
         }),
       )
-      .subscribe((room) => this.roomService.room.next(room));
+      .subscribe((room) => {
+        this.roomService.room.next(room);
+        this.router.navigate(['../wait'], {
+          relativeTo: this.route,
+        });
+      });
   }
 }

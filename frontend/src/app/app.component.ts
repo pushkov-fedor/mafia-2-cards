@@ -50,7 +50,6 @@ export class AppComponent implements OnInit {
           (route) => route.path == (event as RouterEvent).url,
         );
       });
-    this.router.navigate(['room']);
     // this.commonService.openAlertModal({ message: 'SOSI' });
   }
 

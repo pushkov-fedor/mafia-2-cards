@@ -1,19 +1,15 @@
 <div class="container">
   <div class="room-code">
     <h3>Код комнаты</h3>
-    <h2>JKGF</h2>
+    <h2>{{ room?.code }}</h2>
   </div>
   <div class="players-list">
     <h4>Список участников</h4>
-    <span class="number-of-players"></span>
-    <div class="player-list-item">
-      <mat-icon>person</mat-icon> <span class="name">Злая сука</span>
-    </div>
-    <div class="player-list-item">
-      <mat-icon>person</mat-icon> <span class="name">Злая сука</span>
-    </div>
-    <div class="player-list-item">
-      <mat-icon>person</mat-icon> <span class="name">Злая сука</span>
+    <span class="number-of-players"
+      >{{ room?.players.length }}/{{ room?.numberOfPlayers }}</span
+    >
+    <div class="player-list-item" *ngFor="let player of room?.players">
+      <mat-icon>person</mat-icon> <span class="name">{{ player.name }}</span>
     </div>
   </div>
 </div>
