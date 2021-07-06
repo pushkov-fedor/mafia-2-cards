@@ -1,17 +1,22 @@
-import { Room } from './../../shared/models/room.model';
+import { Room, RoomStatus } from './../../shared/models/room.model';
 import { RoomService } from './../room.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { interval, Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { interval, Subscription, throwError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
+import { CommonService } from 'src/app/common.service';
 
 @Component({
   selector: 'room-wait',
   templateUrl: './room-wait.component.html',
   styleUrls: ['./room-wait.component.scss'],
 })
-export class RoomWaitComponent implements OnInit {
-  constructor(private roomService: RoomService, private router: Router) {}
+export class RoomWaitComponent implements OnInit, OnDestroy {
+  constructor(
+    private roomService: RoomService,
+    private commonService: CommonService,
+    private router: Router,
+  ) {}
 
   room: Room;
 
@@ -24,9 +29,25 @@ export class RoomWaitComponent implements OnInit {
       return;
     }
     this.intervalSub = interval(2000)
-      .pipe(switchMap(() => this.roomService.get(this.room.code)))
+      .pipe(
+        switchMap(() =>
+          this.roomService.get(this.room.code, {
+            isExistValidate: 'true',
+            isActiveValidate: 'true',
+            isCancelValidate: 'true',
+          }),
+        ),
+        catchError((err) => {
+          this.commonService.openAlertModal({ message: err.error.message });
+          return throwError(err);
+        }),
+      )
       .subscribe((room) => {
         this.roomService.room.next(room);
       });
+  }
+
+  ngOnDestroy() {
+    this.intervalSub.unsubscribe();
   }
 }

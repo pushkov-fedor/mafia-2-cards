@@ -1,5 +1,17 @@
+import { RoomValidationConfig } from './room.validate';
 import { RoomService } from './room.service';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  DefaultValuePipe,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  ParseBoolPipe,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { JoinRoomDto } from './dto/join-room.dto';
 
@@ -12,8 +24,29 @@ export class RoomController {
   }
 
   @Get(':code')
-  getRoom(@Param('code') code: string) {
-    return this.roomService.getByCode(code);
+  getRoom(
+    @Param('code') code: string,
+    @Query('isExistValidate', new DefaultValuePipe(true), ParseBoolPipe)
+    isExistValidate?: boolean,
+    @Query('isActiveValidate', new DefaultValuePipe(false), ParseBoolPipe)
+    isActiveValidate?: boolean,
+    @Query('isCancelledValidate', new DefaultValuePipe(false), ParseBoolPipe)
+    isCancelledValidate?: boolean,
+    @Query(
+      'hasSlotsForPlayerValidate',
+      new DefaultValuePipe(false),
+      ParseBoolPipe,
+    )
+    hasSlotsForPlayerValidate?: boolean,
+  ) {
+    const validationConfig: RoomValidationConfig = {
+      isExist: isExistValidate,
+      isActive: isActiveValidate,
+      isCancelled: isCancelledValidate,
+      hasSlotsForPlayer: hasSlotsForPlayerValidate,
+    };
+    const room = this.roomService.getByCode(code, validationConfig);
+    return room;
   }
 
   @Post('create')

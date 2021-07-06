@@ -1,5 +1,5 @@
 import { BASE_URL } from './../constants';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Room } from '../shared/models/room.model';
@@ -46,7 +46,9 @@ export class RoomService {
     return this.http.get(`${BASE_URL}room`);
   }
 
-  get(code: string) {
-    return this.http.get<Room>(`${BASE_URL}room/${code}`);
+  get(code: string, params?: { [param: string]: string | string[] }) {
+    return this.http.get<Room>(`${BASE_URL}room/${code}`, {
+      params,
+    });
   }
 }
