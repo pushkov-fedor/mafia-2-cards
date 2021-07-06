@@ -49,11 +49,10 @@ export class RoomCreateComponent {
       .createRoom(name, numberOfPlayers, numberOfMafia, numberOfPolices)
       .pipe(
         catchError((err) => {
-          console.log(err);
           this.commonService.openAlertModal({ message: err.error.message });
           return throwError(err);
         }),
       )
-      .subscribe((res) => console.log(res));
+      .subscribe((room) => this.roomService.room.next(room));
   }
 }

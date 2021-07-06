@@ -21,6 +21,11 @@ const routes: RouterPath[] = [
     title: 'Создание комнаты',
     hasBackBtn: true,
   },
+  {
+    path: '/room/join',
+    title: 'Ждем участников',
+    hasBackBtn: true,
+  },
 ];
 
 @Component({
@@ -45,7 +50,7 @@ export class AppComponent implements OnInit {
           (route) => route.path == (event as RouterEvent).url,
         );
       });
-
+    this.router.navigate(['room']);
     // this.commonService.openAlertModal({ message: 'SOSI' });
   }
 
