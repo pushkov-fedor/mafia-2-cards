@@ -1,4 +1,4 @@
-import { RoomJoinComponent } from './room-join/room-join.component';
+import { RoomWaitComponent } from './room-wait/room-wait.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RoomStartComponent } from './room-start/room-start.component';
@@ -15,8 +15,8 @@ const routes: Routes = [
     component: RoomCreateComponent,
   },
   {
-    path: 'join',
-    component: RoomJoinComponent,
+    path: 'wait',
+    component: RoomWaitComponent,
   },
 ];
 

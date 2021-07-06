@@ -1,4 +1,4 @@
-import { RoomJoinComponent } from './room-join/room-join.component';
+import { RoomWaitComponent } from './room-wait/room-wait.component';
 import { RoomStartComponent } from './room-start/room-start.component';
 import { RoomRoutingModule } from './room-routing.module';
 import { CommonModule } from '@angular/common';
@@ -15,6 +15,6 @@ import { SharedModule } from '../shared/shared.module';
     RoomRoutingModule,
     SharedModule,
   ],
-  declarations: [RoomCreateComponent, RoomStartComponent, RoomJoinComponent],
+  declarations: [RoomCreateComponent, RoomStartComponent, RoomWaitComponent],
 })
 export class RoomModule {}

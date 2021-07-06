@@ -22,7 +22,7 @@ const routes: RouterPath[] = [
     hasBackBtn: true,
   },
   {
-    path: '/room/join',
+    path: '/room/wait',
     title: 'Ждем участников',
     hasBackBtn: true,
   },
