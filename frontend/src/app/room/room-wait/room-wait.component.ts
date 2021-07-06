@@ -34,10 +34,7 @@ export class RoomWaitComponent implements OnInit, OnDestroy {
     this.intervalSub = interval(2000)
       .pipe(
         switchMap(() =>
-          this.roomService.get(this.room.code, {
-            isExistValidate: 'true',
-            isCancelValidate: 'true',
-          }),
+          this.roomService.waitRoom(this.room.code, this.player.name),
         ),
         catchError((err) => {
           this.commonService.openAlertModal({ message: err.error.message });

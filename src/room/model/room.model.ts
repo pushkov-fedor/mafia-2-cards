@@ -2,6 +2,7 @@ import { Player } from './player.model';
 import { RoomStatus } from './room-status.model';
 import { nanoid } from 'nanoid';
 import * as cryptoRandomString from 'crypto-random-string';
+import { addSeconds, isAfter, isBefore } from 'date-fns';
 
 export class Room {
   public id: string;
@@ -24,6 +25,13 @@ export class Room {
         this.roomStatus = RoomStatus.CANCELED;
       }
     }, 1000 * 60 * 5);
+
+    setInterval(() => {
+      const currentTimestamp = new Date();
+      this.players = this.players.filter((player) =>
+        isAfter(player.checkActiveTimeStamp, currentTimestamp),
+      );
+    }, 1000 * 5);
   }
 
   addPlayer(player: Player) {

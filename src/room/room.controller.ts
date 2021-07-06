@@ -1,3 +1,4 @@
+import { WaitRoomDto } from './dto/wait-room.dto';
 import { RoomValidationConfig } from './room.validate';
 import { RoomService } from './room.service';
 import {
@@ -59,5 +60,11 @@ export class RoomController {
   joinRoom(@Body() joinRoomDto: JoinRoomDto) {
     const { code, playerName } = joinRoomDto;
     return this.roomService.join(code, playerName);
+  }
+
+  @Post('wait')
+  waitRoom(@Body() waitRoomDto: WaitRoomDto) {
+    const { code, playerName } = waitRoomDto;
+    return this.roomService.waitRoom(code, playerName);
   }
 }

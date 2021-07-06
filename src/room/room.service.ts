@@ -5,6 +5,7 @@ import { RoomStatus } from './model/room-status.model';
 import { Room } from './model/room.model';
 import { CreateRoomResponse } from './response/create-room.response';
 import { JoinRoomResponse } from './response/join-room.response';
+import { addSeconds } from 'date-fns';
 
 @Injectable()
 export class RoomService {
@@ -40,6 +41,19 @@ export class RoomService {
       room.addPlayer(newPlayer);
       return new JoinRoomResponse(room, newPlayer);
     }
+  }
+
+  waitRoom(code: string, playerName: string) {
+    const room = this.rooms.find((room) => room.code == code);
+    this.roomValidate.validate(room, {
+      isExist: true,
+      isActive: true,
+      isCancelled: true,
+      hasSlotsForPlayer: true,
+    });
+    const player = room.players.find((player) => player.name == playerName);
+    player.checkActiveTimeStamp = addSeconds(new Date(), 7);
+    return room;
   }
 
   getAll() {

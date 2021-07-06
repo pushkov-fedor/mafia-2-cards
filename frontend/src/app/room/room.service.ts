@@ -14,6 +14,13 @@ export class RoomService {
   room = new BehaviorSubject<Room>(null);
   player = new BehaviorSubject<Player>(null);
 
+  waitRoom(code: string, playerName: string) {
+    return this.http.post<Room>(`${BASE_URL}room/wait`, {
+      code,
+      playerName,
+    });
+  }
+
   createRoom(
     creatorName: string,
     players: number,
@@ -27,12 +34,6 @@ export class RoomService {
         players,
         mafia,
         polices,
-      },
-      {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json ',
-        },
       },
     );
   }
