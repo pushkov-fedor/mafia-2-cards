@@ -1,0 +1,30 @@
+<div class="container" [formGroup]="roomJoinFormGroup">
+  <mat-form-field appearance="standard" class="w-100">
+    <mat-label>Введите код комнаты</mat-label>
+    <input
+      matInput
+      formControlName="code"
+      #codeInput
+      (input)="codeInput.value = codeInput.value.toUpperCase()"
+    />
+    <mat-error *ngIf="roomJoinFormGroup.controls.code.hasError('required')"
+      >Обязательное поле</mat-error
+    >
+  </mat-form-field>
+  <mat-form-field appearance="standard" class="w-100">
+    <mat-label>Как вас зовут?</mat-label>
+    <input matInput formControlName="name" />
+    <mat-error *ngIf="roomJoinFormGroup.controls.name.hasError('required')"
+      >Обязательное поле</mat-error
+    >
+  </mat-form-field>
+  <button
+    mat-raised-button
+    color="primary"
+    class="w-100 mt-4"
+    [disabled]="!roomJoinFormGroup.valid"
+    (click)="onRoomJoinClick()"
+  >
+    СОЗДАТЬ
+  </button>
+</div>

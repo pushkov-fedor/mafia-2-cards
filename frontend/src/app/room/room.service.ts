@@ -35,7 +35,18 @@ export class RoomService {
     );
   }
 
+  joinRoom(code: string, playerName: string) {
+    return this.http.post<Room>(`${BASE_URL}room/join`, {
+      code,
+      playerName,
+    });
+  }
+
   getAll() {
     return this.http.get(`${BASE_URL}room`);
+  }
+
+  get(code: string) {
+    return this.http.get<Room>(`${BASE_URL}room/${code}`);
   }
 }
