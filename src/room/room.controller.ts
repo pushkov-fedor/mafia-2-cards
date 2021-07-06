@@ -1,5 +1,5 @@
 import { RoomService } from './room.service';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Options, Param, Post } from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { JoinRoomDto } from './dto/join-room.dto';
 

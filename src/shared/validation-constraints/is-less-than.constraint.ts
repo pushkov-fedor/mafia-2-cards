@@ -10,8 +10,6 @@ export class IsLessThanConstraint implements ValidatorConstraintInterface {
     value: number,
     validationArguments?: ValidationArguments,
   ): boolean | Promise<boolean> {
-    console.log('value: ', value);
-    console.log('validationArguments: ', validationArguments);
     const { object } = validationArguments;
     return validationArguments.constraints.every(
       (constraint) => value < object[constraint],
