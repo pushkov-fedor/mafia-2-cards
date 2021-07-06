@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Player } from './model/player.model';
 import { RoomStatus } from './model/room-status.model';
 import { Room } from './model/room.model';
@@ -23,7 +23,16 @@ export class RoomService {
   join(code: string, playerName: string) {
     const room = this.getByCode(code);
     if (!room) {
-      return;
+      throw new HttpException(
+        'Комната с таким кодом не найдена',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    if (room.roomStatus == RoomStatus.CANCELED) {
+      throw new HttpException(
+        'Комната удалена, т.к. не набралось необходимого количества игроков',
+        HttpStatus.NOT_FOUND,
+      );
     }
     if (room.roomStatus == RoomStatus.PENDING && room.hasSlotForPlayer()) {
       const player = new Player(playerName);

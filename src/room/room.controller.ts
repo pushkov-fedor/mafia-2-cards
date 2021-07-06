@@ -1,5 +1,5 @@
 import { RoomService } from './room.service';
-import { Body, Controller, Get, Options, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { JoinRoomDto } from './dto/join-room.dto';
 
@@ -25,6 +25,11 @@ export class RoomController {
   @Post('join')
   joinRoom(@Body() joinRoomDto: JoinRoomDto) {
     const { code, playerName } = joinRoomDto;
-    return this.roomService.join(code, playerName);
+    try {
+      const room = this.roomService.join(code, playerName);
+      return room;
+    } catch (e) {
+      throw e;
+    }
   }
 }
