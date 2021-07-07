@@ -1,11 +1,10 @@
-import { RoomValidate } from './room.validate';
+import { CoreModule } from './../shared/core.module';
 import { RoomController } from './room.controller';
 import { Module } from '@nestjs/common';
-import { RoomService } from './room.service';
 
 @Module({
-  imports: [],
+  imports: [CoreModule],
   controllers: [RoomController],
-  providers: [RoomService, RoomValidate],
+  providers: [],
 })
 export class RoomModule {}

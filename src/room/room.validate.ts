@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { RoomStatus } from './model/room-status.model';
 import { Room } from './model/room.model';
 
@@ -9,6 +9,7 @@ export interface RoomValidationConfig {
   hasSlotsForPlayer?: boolean;
 }
 
+@Injectable()
 export class RoomValidate {
   validate(room: Room, config: RoomValidationConfig) {
     if (!config) return true;
