@@ -7,7 +7,6 @@ export class GameController {
 
   @Post('start/:roomCode')
   startGame(@Param('roomCode') roomCode: string) {
-    console.log(123);
     return this.gameService.startGame(roomCode);
   }
 }
