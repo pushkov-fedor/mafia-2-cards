@@ -3,6 +3,7 @@ import { RoomService } from '../room/room.service';
 import { CardType } from './model/card-type.model';
 import * as _ from 'lodash';
 import { Card } from './model/card.model';
+import { RoomStatus } from '../room/model/room-status.model';
 
 @Injectable()
 export class GameService {
@@ -12,11 +13,14 @@ export class GameService {
     const room = this.roomService.getByCode(roomCode);
     const { numberOfPlayers, numberOfMafia, numberOfPolices } = room;
     const cards = this.generateCards(
-      numberOfPlayers - numberOfMafia - numberOfPolices,
+      numberOfPlayers * 2 - numberOfMafia - numberOfPolices,
       numberOfMafia,
       numberOfPolices,
     );
-    console.log(cards);
+    const cardChunks = _.chunk(cards, 2);
+    const players = room.players;
+    players.forEach((player, index) => (player.cards = cardChunks[index]));
+    room.roomStatus = RoomStatus.ACTIVE;
   }
 
   generateCards(

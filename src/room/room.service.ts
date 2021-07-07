@@ -47,9 +47,7 @@ export class RoomService {
     const room = this.rooms.find((room) => room.code == code);
     this.roomValidate.validate(room, {
       isExist: true,
-      isActive: true,
       isCancelled: true,
-      hasSlotsForPlayer: true,
     });
     const player = room.players.find((player) => player.name == playerName);
     player.checkActiveTimeStamp = addSeconds(new Date(), 7);

@@ -12,7 +12,7 @@ export class IsLessThanConstraint implements ValidatorConstraintInterface {
   ): boolean | Promise<boolean> {
     const { object } = validationArguments;
     return validationArguments.constraints.every(
-      (constraint) => value < object[constraint],
+      (constraint) => value < object[constraint] * 2,
     );
   }
   defaultMessage?(validationArguments?: ValidationArguments): string {
