@@ -13,7 +13,6 @@ export interface RoomValidationConfig {
 export class RoomValidate {
   validate(room: Room, config: RoomValidationConfig) {
     if (!config) return true;
-
     if (config.isExist && !room) {
       throw new HttpException(
         'Комната с таким кодом не найдена',
@@ -26,7 +25,7 @@ export class RoomValidate {
         HttpStatus.BAD_REQUEST,
       );
     }
-    if (config.isExist && room.roomStatus == RoomStatus.ACTIVE) {
+    if (config.isActive && room.roomStatus == RoomStatus.ACTIVE) {
       throw new HttpException('Игра уже началась', HttpStatus.BAD_REQUEST);
     }
     if (config.hasSlotsForPlayer && !room.hasSlotForPlayer()) {
