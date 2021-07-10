@@ -7,21 +7,4 @@ import { Card } from './model/card.model';
 @Injectable()
 export class GameService {
   constructor(private roomService: RoomService) {}
-
-  generateCards(
-    numberOfCivils: number,
-    numberOfMafia: number,
-    numberOfPolices: number,
-  ) {
-    const cards = new Array(numberOfCivils).fill(CardType.CIVIL);
-    for (let i = 0; i < numberOfMafia; i++) {
-      cards.push(CardType.MAFIA);
-    }
-    for (let i = 0; i < numberOfPolices; i++) {
-      cards.push(CardType.POLICE);
-    }
-    return (_.shuffle(cards) as CardType[]).map(
-      (cardType) => new Card(cardType),
-    );
-  }
 }
