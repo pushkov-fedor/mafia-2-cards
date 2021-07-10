@@ -31,6 +31,11 @@ const routes: RouterPath[] = [
     title: 'Ждем участников',
     hasBackBtn: true,
   },
+  {
+    path: '/game',
+    title: 'Игра',
+    hasBackBtn: false,
+  },
 ];
 
 @Component({

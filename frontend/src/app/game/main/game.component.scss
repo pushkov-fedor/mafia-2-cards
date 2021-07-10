@@ -1,0 +1,22 @@
+.container {
+  .cards {
+    h3 {
+      font-size: 25px;
+      font-weight: bold;
+    }
+  }
+
+  .day-card {
+    background-color: white;
+    border-radius: 10px;
+
+    h4 {
+      font-size: 25px;
+    }
+
+    p {
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+}

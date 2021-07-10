@@ -6,6 +6,10 @@ const routes: Routes = [
     path: 'room',
     loadChildren: () => import('./room/room.module').then((m) => m.RoomModule),
   },
+  {
+    path: 'game',
+    loadChildren: () => import('./game/game.module').then((m) => m.GameModule),
+  },
 ];
 
 @NgModule({
