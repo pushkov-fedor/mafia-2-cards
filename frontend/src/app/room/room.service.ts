@@ -48,6 +48,12 @@ export class RoomService {
     );
   }
 
+  startRoom(code: string) {
+    return this.http.post(`${BASE_URL}game/start`, {
+      roomCode: code,
+    });
+  }
+
   getAll() {
     return this.http.get(`${BASE_URL}room`);
   }

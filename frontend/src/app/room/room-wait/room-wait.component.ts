@@ -25,7 +25,12 @@ export class RoomWaitComponent implements OnInit, OnDestroy {
   intervalSub: Subscription;
 
   ngOnInit(): void {
-    this.roomService.room.subscribe((room) => (this.room = room));
+    this.roomService.room.subscribe((room) => {
+      this.room = room;
+      if (room.roomStatus == RoomStatus.ACTIVE) {
+        this.router.navigate(['game']);
+      }
+    });
     this.player = this.roomService.player.getValue();
     if (!this.room) {
       this.router.navigate(['room']);
@@ -45,6 +50,12 @@ export class RoomWaitComponent implements OnInit, OnDestroy {
       .subscribe((room) => {
         this.roomService.room.next(room);
       });
+  }
+
+  onGameStart() {
+    this.roomService
+      .startRoom(this.room.code)
+      .subscribe((res) => console.log(res));
   }
 
   ngOnDestroy() {

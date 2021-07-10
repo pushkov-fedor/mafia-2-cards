@@ -19,7 +19,8 @@
     [disabled]="
       !player?.isRoomCreator || room.numberOfPlayers > room.players.length
     "
+    (click)="onGameStart()"
   >
-    СОЗДАТЬ
+    НАЧАТЬ ИГРУ
   </button>
 </div>
