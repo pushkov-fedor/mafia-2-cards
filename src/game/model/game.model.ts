@@ -6,8 +6,11 @@ import { Card } from './card.model';
 import * as _ from 'lodash';
 
 export class Citizen {
-  canPlay = true;
   shouldRevealCard = false;
+
+  get canPlay() {
+    return this.cards.some((card) => !card.isRevealed);
+  }
 
   constructor(public name: string, public cards: Card[] = []) {}
 }
@@ -71,7 +74,11 @@ export class Game {
     );
     this.citizens = this.players2Citizens(players, cards);
     this.days.push(new Day(true));
-    room.roomStatus = RoomStatus.ACTIVE;
+  }
+
+  nextDayStage() {
+    const day = _.last(this.days) as Day;
+    day.nextStage();
   }
 
   private players2Citizens(players: Player[], cards: Card[]) {
