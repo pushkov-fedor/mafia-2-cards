@@ -1,4 +1,4 @@
-export class KillPlayerDto {
+export class KillCitizenDto {
   roomCode: string;
-  playerName: string;
+  citizenName: string;
 }
