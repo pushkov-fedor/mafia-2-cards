@@ -2,7 +2,8 @@ import { Player } from './player.model';
 import { RoomStatus } from './room-status.model';
 import { nanoid } from 'nanoid';
 import * as cryptoRandomString from 'crypto-random-string';
-import { addSeconds, isAfter, isBefore } from 'date-fns';
+import { isAfter } from 'date-fns';
+import { Game } from '../../game/model/game.model';
 
 export class Room {
   public id: string;

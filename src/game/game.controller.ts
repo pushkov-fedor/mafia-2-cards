@@ -1,12 +1,8 @@
 import { GameService } from './game.service';
-import { Controller, Param, Post } from '@nestjs/common';
+import { Body, Controller, Param, Post } from '@nestjs/common';
+import { KillPlayerDto } from './dto/kill-player.dto';
 
 @Controller('game')
 export class GameController {
   constructor(private gameService: GameService) {}
-
-  @Post('start/:roomCode')
-  startGame(@Param('roomCode') roomCode: string) {
-    return this.gameService.startGame(roomCode);
-  }
 }
