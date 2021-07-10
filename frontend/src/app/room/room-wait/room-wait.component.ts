@@ -4,7 +4,7 @@ import { RoomService } from './../room.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { interval, Subscription, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, filter, switchMap } from 'rxjs/operators';
 import { CommonService } from 'src/app/common.service';
 
 @Component({
@@ -25,12 +25,14 @@ export class RoomWaitComponent implements OnInit, OnDestroy {
   intervalSub: Subscription;
 
   ngOnInit(): void {
-    this.roomService.room.subscribe((room) => {
-      this.room = room;
-      if (room.roomStatus == RoomStatus.ACTIVE) {
-        this.router.navigate(['game']);
-      }
-    });
+    this.roomService.room
+      .pipe(filter((room) => room != null || room != undefined))
+      .subscribe((room) => {
+        this.room = room;
+        if (room.roomStatus == RoomStatus.ACTIVE) {
+          this.router.navigate(['game']);
+        }
+      });
     this.player = this.roomService.player.getValue();
     if (!this.room) {
       this.router.navigate(['room']);
