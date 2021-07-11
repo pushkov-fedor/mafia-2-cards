@@ -1,13 +1,29 @@
 <div class="container">
   <h3 class="mb-3 text-center">{{ actionTitle }}</h3>
-  <ul class="mb-3 p-0" *ngIf="!policeCheckResult">
+  <ul
+    class="mb-3 p-0"
+    *ngIf="!policeCheckResult && actionType != actionTypeEnum.CardReveal"
+  >
     <li
       *ngFor="let citizen of citizens"
       class="text-center mb-2"
-      (click)="onSelect(citizen)"
+      (click)="onCitizenSelect(citizen)"
       [ngClass]="{ selected: citizen.name == selected?.name }"
     >
       {{ citizen.name }}
+    </li>
+  </ul>
+  <ul
+    class="mb-3 p-0"
+    *ngIf="!policeCheckResult && actionType == actionTypeEnum.CardReveal"
+  >
+    <li
+      *ngFor="let card of myCitizen.cards; let i = index"
+      class="text-center mb-2"
+      (click)="onCardSelect(i)"
+      [ngClass]="{ selected: i == selectedCardIndex }"
+    >
+      {{ cardType2String(card.cardType) }}
     </li>
   </ul>
   <button
@@ -36,5 +52,14 @@
     (click)="onPoliceCheck(1)"
   >
     ПРОВЕРИТЬ ВТОРУЮ КАРТУ
+  </button>
+  <button
+    mat-raised-button
+    class="w-100"
+    [disabled]="selectedCardIndex === null || selectedCardIndex === undefined"
+    *ngIf="actionType == actionTypeEnum.CardReveal"
+    (click)="onCardReveal()"
+  >
+    ПОКАЗАТЬ КАРТУ
   </button>
 </div>

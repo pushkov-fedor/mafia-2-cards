@@ -29,4 +29,12 @@ export class GameService {
       cardIndex,
     });
   }
+
+  cardReveal(roomCode: string, citizenName: string, cardIndex: number) {
+    return this.http.post<Game>(`${BASE_URL}game/cardReveal`, {
+      roomCode,
+      citizenName,
+      cardIndex,
+    });
+  }
 }

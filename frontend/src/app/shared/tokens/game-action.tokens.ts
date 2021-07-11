@@ -14,3 +14,6 @@ export const GAME_ACTION_MODAL_ROOM_CODE = new InjectionToken<string>(
 export const GAME_ACTION_MODAL_ACTION_TYPE = new InjectionToken<ActionType>(
   'GAME_ACTION_MODAL_ACTION_TYPE',
 );
+export const GAME_ACTION_MODAL_MY_CITIZEN = new InjectionToken<Citizen>(
+  'GAME_ACTION_MODAL_MY_CITIZEN',
+);

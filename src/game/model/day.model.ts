@@ -3,13 +3,11 @@ import { DayStage } from './day-stage.model';
 export class Day {
   dayRoutine: DayStage[] = [
     DayStage.CitizenWelcome,
-    DayStage.CitizenKill,
-    DayStage.CardRevealRequest,
-    DayStage.CardRevealResult,
     DayStage.MafiaKill,
     DayStage.PoliceCheck,
     DayStage.CardRevealRequest,
-    DayStage.CardRevealResult,
+    DayStage.CitizenKill,
+    DayStage.CardRevealRequest,
     DayStage.Finish,
   ];
   dayLog: string[] = [];
@@ -26,13 +24,16 @@ export class Day {
     if (isFirstDay) {
       this.log('Пока ничего не произошло');
       setTimeout(() => {
-        this.currentStageIndex = 4;
+        this.currentStageIndex = 1;
       }, 15 * 1000);
     }
   }
 
-  nextStage() {
+  nextStage(numberOfMafia: number, numberOfPolices: number) {
     this.currentStageIndex++;
+    if (this.currentStage == DayStage.PoliceCheck && numberOfPolices == 0) {
+      this.nextStage(numberOfMafia, numberOfPolices);
+    }
     if (this.currentStage == DayStage.CardRevealRequest) {
       this.log('Ждем вскрытия карт');
     }

@@ -50,10 +50,17 @@ export class GameComponent implements OnInit, OnDestroy {
     return this.days.reverse();
   }
   get isMafia() {
-    return this.citizen.cards.some((card) => card.cardType == CardType.MAFIA);
+    return this.citizen.cards.some(
+      (card) => card.cardType == CardType.MAFIA && !card.isRevealed,
+    );
   }
   get isPolice() {
-    return this.citizen.cards.some((card) => card.cardType == CardType.POLICE);
+    return this.citizen.cards.some(
+      (card) => card.cardType == CardType.POLICE && !card.isRevealed,
+    );
+  }
+  get shouldRevealCard() {
+    return this.citizen.shouldRevealCard;
   }
 
   currentDayStage = new BehaviorSubject<DayStage>(null);
@@ -79,33 +86,46 @@ export class GameComponent implements OnInit, OnDestroy {
         distinctUntilChanged(),
       )
       .subscribe((stage) => {
-        if (stage == DayStage.MafiaKill) {
-          if (this.isMafia) {
-            this.commonService.openGameActionModal({
-              citizens: this.game.citizens,
-              roomCode: this.game.roomCode,
-              backdropClass: 'purple-backdrop',
-              actionType: ActionType.MafiaKill,
-            });
-          } else {
-            this.commonService.openIdleModal();
-          }
-        }
-        if (stage == DayStage.PoliceCheck) {
-          if (this.isPolice) {
-            this.commonService.openGameActionModal({
-              citizens: this.game.citizens,
-              roomCode: this.game.roomCode,
-              backdropClass: 'purple-backdrop',
-              actionType: ActionType.PoliceCheck,
-            });
-          } else {
-            this.commonService.openIdleModal();
-          }
-        }
-        if (stage == DayStage.CardRevealRequest) {
-          this.commonService.closeIdleModal();
-          this.commonService.closeGameActionModal();
+        switch (stage) {
+          case DayStage.MafiaKill:
+            if (this.isMafia) {
+              this.commonService.openGameActionModal({
+                citizens: this.game.citizens,
+                roomCode: this.game.roomCode,
+                backdropClass: 'purple-backdrop',
+                actionType: ActionType.MafiaKill,
+                myCitizen: this.citizen,
+              });
+            } else {
+              this.commonService.openIdleModal();
+            }
+            break;
+          case DayStage.PoliceCheck:
+            if (this.isPolice) {
+              this.commonService.openGameActionModal({
+                citizens: this.game.citizens,
+                roomCode: this.game.roomCode,
+                backdropClass: 'purple-backdrop',
+                actionType: ActionType.PoliceCheck,
+                myCitizen: this.citizen,
+              });
+            } else {
+              this.commonService.openIdleModal();
+            }
+            break;
+          case DayStage.CardRevealRequest:
+            this.commonService.closeIdleModal();
+            this.commonService.closeGameActionModal();
+            if (this.shouldRevealCard) {
+              this.commonService.openGameActionModal({
+                citizens: this.game.citizens,
+                roomCode: this.game.roomCode,
+                backdropClass: 'purple-backdrop',
+                actionType: ActionType.CardReveal,
+                myCitizen: this.citizen,
+              });
+            }
+            break;
         }
       });
   }

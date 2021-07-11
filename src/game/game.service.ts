@@ -45,11 +45,23 @@ export class GameService {
     );
     const card = citizen.cards[cardIndex];
     card.isRevealed = true;
+    game.activeDayLog(`Вскрытая карта: ${this.cardType2String(card.cardType)}`);
     game.nextDayStage();
     return game;
   }
 
   getGameByRoomCode(roomCode: string) {
     return this.games.find((game) => game.roomCode == roomCode);
+  }
+
+  private cardType2String(cardType: CardType) {
+    switch (cardType) {
+      case CardType.CIVIL:
+        return 'Мирный житель';
+      case CardType.MAFIA:
+        return 'Мафия';
+      case CardType.POLICE:
+        return 'Комиссар';
+    }
   }
 }

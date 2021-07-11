@@ -11,6 +11,7 @@ import {
   GAME_ACTION_MODAL_ACTION_TYPE,
   GAME_ACTION_MODAL_CITIZENS,
   GAME_ACTION_MODAL_CLOSE,
+  GAME_ACTION_MODAL_MY_CITIZEN,
   GAME_ACTION_MODAL_ROOM_CODE,
 } from './shared/tokens/game-action.tokens';
 import { GameActionComponent } from './game/action/action.component';
@@ -31,6 +32,7 @@ interface ActionModalConfig extends ModalConfig {
   citizens?: Citizen[];
   roomCode?: string;
   actionType: ActionType;
+  myCitizen: Citizen;
 }
 
 const DEFAULT_CONFIG: ModalConfig = {
@@ -162,6 +164,10 @@ export class CommonService {
         {
           provide: GAME_ACTION_MODAL_ACTION_TYPE,
           useValue: config.actionType,
+        },
+        {
+          provide: GAME_ACTION_MODAL_MY_CITIZEN,
+          useValue: config.myCitizen,
         },
       ],
     });

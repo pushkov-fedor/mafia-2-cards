@@ -8,6 +8,7 @@ import {
   GAME_ACTION_MODAL_ACTION_TYPE,
   GAME_ACTION_MODAL_CITIZENS,
   GAME_ACTION_MODAL_CLOSE,
+  GAME_ACTION_MODAL_MY_CITIZEN,
   GAME_ACTION_MODAL_ROOM_CODE,
 } from 'src/app/shared/tokens/game-action.tokens';
 import { GameService } from '../game.service';
@@ -23,9 +24,21 @@ export class GameActionComponent {
     @Inject(GAME_ACTION_MODAL_CLOSE) public closeModal: () => void,
     @Inject(GAME_ACTION_MODAL_ROOM_CODE) public roomCode: string,
     @Inject(GAME_ACTION_MODAL_ACTION_TYPE) public actionType: ActionType,
+    @Inject(GAME_ACTION_MODAL_MY_CITIZEN) public myCitizen: Citizen,
     private gameService: GameService,
     private commonService: CommonService,
   ) {}
+
+  get actionListItems() {
+    switch (this.actionType) {
+      case ActionType.MafiaKill:
+      case ActionType.PoliceCheck:
+      case ActionType.CivilKill:
+        return this.citizens;
+      case ActionType.CardReveal:
+        return this.myCitizen.cards;
+    }
+  }
 
   get actionTitle() {
     if (this.policeCheckResult) {
@@ -37,18 +50,23 @@ export class GameActionComponent {
       case ActionType.PoliceCheck:
         return 'Кого проверить?';
       case ActionType.CardReveal:
-        return 'Вскройте карту?';
+        return 'Вскройте карту';
       case ActionType.CivilKill:
         return 'Кого осудить?';
     }
   }
 
   selected: Citizen;
+  selectedCardIndex: number;
+
   actionTypeEnum = ActionType;
   policeCheckResult: Card;
 
-  onSelect(citizen: Citizen) {
+  onCitizenSelect(citizen: Citizen) {
     this.selected = citizen;
+  }
+  onCardSelect(cardIndex: number) {
+    this.selectedCardIndex = cardIndex;
   }
 
   onKill() {
@@ -65,6 +83,14 @@ export class GameActionComponent {
       .subscribe((card) => {
         this.policeCheckResult = card;
       });
+  }
+
+  onCardReveal() {
+    this.gameService
+      .cardReveal(this.roomCode, this.myCitizen.name, this.selectedCardIndex)
+      .subscribe(() => void 0);
+    this.commonService.openIdleModal();
+    this.closeModal();
   }
 
   cardType2String(cardType: CardType) {

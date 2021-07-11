@@ -16,7 +16,16 @@ export class Game {
 
   get numberOfMafia() {
     return this.citizens.filter((citizen) =>
-      citizen.cards.some((card) => card.cardType == CardType.MAFIA),
+      citizen.cards.some(
+        (card) => card.cardType == CardType.MAFIA && !card.isRevealed,
+      ),
+    ).length;
+  }
+  get numberOfPolices() {
+    return this.citizens.filter((citizen) =>
+      citizen.cards.some(
+        (card) => card.cardType == CardType.POLICE && !card.isRevealed,
+      ),
     ).length;
   }
 
@@ -34,7 +43,7 @@ export class Game {
 
   nextDayStage() {
     const day = _.last(this.days) as Day;
-    day.nextStage();
+    day.nextStage(this.numberOfMafia, this.numberOfPolices);
   }
 
   activeDayLog(message: string) {
