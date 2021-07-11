@@ -1,63 +1,10 @@
 import { Player } from '../../room/model/player.model';
-import { RoomStatus } from '../../room/model/room-status.model';
 import { Room } from '../../room/model/room.model';
 import { CardType } from './card-type.model';
 import { Card } from './card.model';
 import * as _ from 'lodash';
-
-export class Citizen {
-  shouldRevealCard = false;
-
-  get canPlay() {
-    return this.cards.some((card) => !card.isRevealed);
-  }
-
-  constructor(public name: string, public cards: Card[] = []) {}
-}
-
-export enum DayStage {
-  CitizenWelcome,
-  CitizenKill,
-  CardRevealRequest,
-  CardRevealResult,
-  MafiaKill,
-  PoliceCheck,
-  Finish,
-}
-
-export class Day {
-  dayRoutine: DayStage[] = [
-    DayStage.CitizenWelcome,
-    DayStage.CitizenKill,
-    DayStage.CardRevealRequest,
-    DayStage.CardRevealResult,
-    DayStage.MafiaKill,
-    DayStage.PoliceCheck,
-    DayStage.CardRevealRequest,
-    DayStage.CardRevealResult,
-    DayStage.Finish,
-  ];
-  currentStageIndex: number;
-  killedByCitizenKillStage: string;
-  killedByMafiaKillStage: string;
-
-  get currentStage() {
-    return this.dayRoutine[this.currentStageIndex];
-  }
-
-  constructor(isFirstDay = false) {
-    this.currentStageIndex = isFirstDay ? 0 : 1;
-    if (isFirstDay) {
-      setTimeout(() => {
-        this.nextStage();
-      }, 15 * 1000);
-    }
-  }
-
-  nextStage() {
-    this.currentStageIndex++;
-  }
-}
+import { Citizen } from './citizen.model';
+import { Day } from './day.model';
 
 export class Game {
   roomCode: string;
@@ -79,6 +26,11 @@ export class Game {
   nextDayStage() {
     const day = _.last(this.days) as Day;
     day.nextStage();
+  }
+
+  activeDayLog(message: string) {
+    const day = _.last(this.days) as Day;
+    day.log(message);
   }
 
   private players2Citizens(players: Player[], cards: Card[]) {

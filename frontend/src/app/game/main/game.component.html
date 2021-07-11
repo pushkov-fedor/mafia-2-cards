@@ -1,13 +1,14 @@
 <div class="container">
   <div class="cards pt-5">
-    <h3 class="w-100 text-center">Мафия</h3>
-    <h3 class="w-100 text-center">Мирный житель</h3>
+    <h3 class="w-100 text-center" *ngFor="let card of cards">
+      {{ cardType2String(card.cardType) }}
+    </h3>
   </div>
 
-  <div class="day-card p-4">
-    <h4 class="w-100 text-center">День 1</h4>
-    <p class="day-event w-100 text-center">
-      Сегодня убили "Злая сука". Ждем вскрытия карты.
+  <div class="day-card p-4" *ngFor="let day of daysReversed; let i = index">
+    <h4 class="w-100 text-center">День {{ i + 1 }}</h4>
+    <p class="day-event w-100 text-center" *ngFor="let log of day.dayLog">
+      {{ log }}
     </p>
   </div>
 </div>

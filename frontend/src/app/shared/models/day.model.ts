@@ -12,6 +12,7 @@ export class Day {
     DayStage.CardRevealResult,
     DayStage.Finish,
   ];
+  dayLog: string[];
   currentStageIndex: number;
   killedByCitizenKillStage: string;
   killedByMafiaKillStage: string;

@@ -26,6 +26,7 @@ export class GameService {
     );
     citizen.shouldRevealCard = true;
     game.nextDayStage();
+    game.activeDayLog(`Сегодня убили ${citizen.name}`);
     return game;
   }
 
