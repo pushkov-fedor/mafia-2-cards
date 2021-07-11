@@ -61,9 +61,19 @@ export class Game {
     for (let i = 0; i < numberOfPolices; i++) {
       cards.push(CardType.POLICE);
     }
-    return (_.shuffle(cards) as CardType[]).map(
-      (cardType) => new Card(cardType),
-    );
+    let cardsShuffled = _.shuffle(cards) as CardType[];
+    let cardChunks = _.chunk(cardsShuffled, 2) as [CardType, CardType][];
+    while (
+      cardChunks.some(
+        ([ct1, ct2]) =>
+          (ct1 == CardType.MAFIA && ct2 == CardType.POLICE) ||
+          (ct1 == CardType.POLICE && ct2 == CardType.MAFIA),
+      )
+    ) {
+      cardsShuffled = _.shuffle(cards) as CardType[];
+      cardChunks = _.chunk(cardsShuffled, 2) as [CardType, CardType][];
+    }
+    return cardsShuffled.map((cardType) => new Card(cardType));
   }
 
   kill(citizenName: string) {
