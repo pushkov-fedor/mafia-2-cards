@@ -33,9 +33,6 @@ export class Day {
 
   nextStage() {
     this.currentStageIndex++;
-    if (this.currentStage == DayStage.PoliceCheck) {
-      this.currentStageIndex++;
-    }
     if (this.currentStage == DayStage.CardRevealRequest) {
       this.log('Ждем вскрытия карт');
     }

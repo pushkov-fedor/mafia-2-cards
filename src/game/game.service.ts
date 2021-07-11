@@ -34,7 +34,7 @@ export class GameService {
     const citizen = game.citizens.find(
       (citizen) => citizen.name == citizenName,
     );
-    game.nextDayStage();
+    setTimeout(() => game.nextDayStage(), 10 * 1000);
     return citizen.cards[cardIndex];
   }
 

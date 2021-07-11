@@ -1,0 +1,40 @@
+<div class="container">
+  <h3 class="mb-3 text-center">{{ actionTitle }}</h3>
+  <ul class="mb-3 p-0" *ngIf="!policeCheckResult">
+    <li
+      *ngFor="let citizen of citizens"
+      class="text-center mb-2"
+      (click)="onSelect(citizen)"
+      [ngClass]="{ selected: citizen.name == selected?.name }"
+    >
+      {{ citizen.name }}
+    </li>
+  </ul>
+  <button
+    mat-raised-button
+    (click)="onKill()"
+    class="w-100"
+    [disabled]="!selected"
+    *ngIf="actionType == actionTypeEnum.MafiaKill"
+  >
+    УБИТЬ
+  </button>
+  <button
+    mat-raised-button
+    class="w-100"
+    [disabled]="!selected"
+    *ngIf="actionType == actionTypeEnum.PoliceCheck && !policeCheckResult"
+    (click)="onPoliceCheck(0)"
+  >
+    ПРОВЕРИТЬ ПЕРВУЮ КАРТУ
+  </button>
+  <button
+    mat-raised-button
+    class="w-100"
+    [disabled]="!selected"
+    *ngIf="actionType == actionTypeEnum.PoliceCheck && !policeCheckResult"
+    (click)="onPoliceCheck(1)"
+  >
+    ПРОВЕРИТЬ ВТОРУЮ КАРТУ
+  </button>
+</div>

@@ -11,6 +11,7 @@ import { GameService } from '../game.service';
 import * as _ from 'lodash';
 import { DayStage } from 'src/app/shared/models/day-stage.model';
 import { CommonService } from 'src/app/common.service';
+import { ActionType } from 'src/app/shared/models/action.modal';
 
 @Component({
   selector: 'game',
@@ -51,6 +52,9 @@ export class GameComponent implements OnInit, OnDestroy {
   get isMafia() {
     return this.citizen.cards.some((card) => card.cardType == CardType.MAFIA);
   }
+  get isPolice() {
+    return this.citizen.cards.some((card) => card.cardType == CardType.POLICE);
+  }
 
   currentDayStage = new BehaviorSubject<DayStage>(null);
 
@@ -77,10 +81,23 @@ export class GameComponent implements OnInit, OnDestroy {
       .subscribe((stage) => {
         if (stage == DayStage.MafiaKill) {
           if (this.isMafia) {
-            this.commonService.openGameKillModal({
+            this.commonService.openGameActionModal({
               citizens: this.game.citizens,
               roomCode: this.game.roomCode,
               backdropClass: 'purple-backdrop',
+              actionType: ActionType.MafiaKill,
+            });
+          } else {
+            this.commonService.openIdleModal();
+          }
+        }
+        if (stage == DayStage.PoliceCheck) {
+          if (this.isPolice) {
+            this.commonService.openGameActionModal({
+              citizens: this.game.citizens,
+              roomCode: this.game.roomCode,
+              backdropClass: 'purple-backdrop',
+              actionType: ActionType.PoliceCheck,
             });
           } else {
             this.commonService.openIdleModal();
@@ -88,6 +105,7 @@ export class GameComponent implements OnInit, OnDestroy {
         }
         if (stage == DayStage.CardRevealRequest) {
           this.commonService.closeIdleModal();
+          this.commonService.closeGameActionModal();
         }
       });
   }

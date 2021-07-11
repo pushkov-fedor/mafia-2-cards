@@ -8,12 +8,14 @@ import {
 } from './shared/tokens/alert.tokens';
 import { Citizen } from './shared/models/citizen.model';
 import {
-  KILL_MODAL_CITIZENS,
-  KILL_MODAL_CLOSE,
-  KILL_MODAL_ROOM_CODE,
-} from './shared/tokens/kill.tokens';
-import { KillComponent } from './game/kill/kill.component';
+  GAME_ACTION_MODAL_ACTION_TYPE,
+  GAME_ACTION_MODAL_CITIZENS,
+  GAME_ACTION_MODAL_CLOSE,
+  GAME_ACTION_MODAL_ROOM_CODE,
+} from './shared/tokens/game-action.tokens';
+import { GameActionComponent } from './game/action/action.component';
 import { IdleComponent } from './game/idle/idle.component';
+import { ActionType } from './shared/models/action.modal';
 
 interface ModalConfig {
   panelClass?: string;
@@ -25,9 +27,10 @@ interface AlertModalConfig extends ModalConfig {
   message?: string;
 }
 
-interface KillModalConfig extends ModalConfig {
+interface ActionModalConfig extends ModalConfig {
   citizens?: Citizen[];
   roomCode?: string;
+  actionType: ActionType;
 }
 
 const DEFAULT_CONFIG: ModalConfig = {
@@ -42,7 +45,7 @@ const DEFAULT_CONFIG: ModalConfig = {
 export class CommonService {
   constructor(private overlay: Overlay) {}
   alertOverlayRef?: OverlayRef;
-  killOverlayRef?: OverlayRef;
+  actionOverlayRef?: OverlayRef;
   idleOverlayRef?: OverlayRef;
 
   openIdleModal() {
@@ -56,28 +59,32 @@ export class CommonService {
     }
   }
   closeIdleModal() {
-    this.idleOverlayRef.dispose();
-    this.idleOverlayRef = null;
-  }
-
-  openGameKillModal(config: KillModalConfig = {}) {
-    if (!this.killOverlayRef) {
-      const modalConfig = { ...DEFAULT_CONFIG, ...config };
-      this.killOverlayRef = this.createOverlay(modalConfig);
-
-      const injector = this.createKillInjector(config);
-      const killModalPortal = new ComponentPortal(
-        KillComponent,
-        null,
-        injector,
-      );
-      this.killOverlayRef.attach(killModalPortal);
+    if (this.idleOverlayRef) {
+      this.idleOverlayRef.dispose();
+      this.idleOverlayRef = null;
     }
   }
 
-  closeGameKillModal() {
-    this.killOverlayRef.dispose();
-    this.killOverlayRef = null;
+  openGameActionModal(config: ActionModalConfig) {
+    if (!this.actionOverlayRef) {
+      const modalConfig = { ...DEFAULT_CONFIG, ...config };
+      this.actionOverlayRef = this.createOverlay(modalConfig);
+
+      const injector = this.createKillInjector(config);
+      const killModalPortal = new ComponentPortal(
+        GameActionComponent,
+        null,
+        injector,
+      );
+      this.actionOverlayRef.attach(killModalPortal);
+    }
+  }
+
+  closeGameActionModal() {
+    if (this.actionOverlayRef) {
+      this.actionOverlayRef.dispose();
+      this.actionOverlayRef = null;
+    }
   }
 
   openAlertModal(config: AlertModalConfig = {}) {
@@ -140,17 +147,21 @@ export class CommonService {
     });
   }
 
-  private createKillInjector(config: KillModalConfig) {
+  private createKillInjector(config: ActionModalConfig) {
     return Injector.create({
       providers: [
-        { provide: KILL_MODAL_CITIZENS, useValue: config.citizens },
+        { provide: GAME_ACTION_MODAL_CITIZENS, useValue: config.citizens },
         {
-          provide: KILL_MODAL_CLOSE,
-          useValue: this.closeGameKillModal.bind(this),
+          provide: GAME_ACTION_MODAL_CLOSE,
+          useValue: this.closeGameActionModal.bind(this),
         },
         {
-          provide: KILL_MODAL_ROOM_CODE,
+          provide: GAME_ACTION_MODAL_ROOM_CODE,
           useValue: config.roomCode,
+        },
+        {
+          provide: GAME_ACTION_MODAL_ACTION_TYPE,
+          useValue: config.actionType,
         },
       ],
     });

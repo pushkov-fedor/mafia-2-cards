@@ -2,6 +2,7 @@ import { Overlay } from '@angular/cdk/overlay';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BASE_URL } from '../constants';
+import { Card } from '../shared/models/card.model';
 import { Game } from '../shared/models/game.model';
 
 @Injectable({
@@ -18,6 +19,14 @@ export class GameService {
     return this.http.post<Game>(`${BASE_URL}game/killCitizen`, {
       roomCode,
       citizenName,
+    });
+  }
+
+  policeCheck(roomCode: string, citizenName: string, cardIndex: string) {
+    return this.http.post<Card>(`${BASE_URL}game/policeCheck`, {
+      roomCode,
+      citizenName,
+      cardIndex,
     });
   }
 }

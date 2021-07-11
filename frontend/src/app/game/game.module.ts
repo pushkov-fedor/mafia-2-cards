@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { GameRoutingModule } from './game-routing.module';
 import { IdleComponent } from './idle/idle.component';
-import { KillComponent } from './kill/kill.component';
+import { GameActionComponent } from './action/action.component';
 import { GameComponent } from './main/game.component';
 
 @NgModule({
@@ -15,6 +15,6 @@ import { GameComponent } from './main/game.component';
     GameRoutingModule,
     SharedModule,
   ],
-  declarations: [GameComponent, KillComponent, IdleComponent],
+  declarations: [GameComponent, GameActionComponent, IdleComponent],
 })
 export class GameModule {}
