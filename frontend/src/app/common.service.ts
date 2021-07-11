@@ -12,6 +12,7 @@ import {
   KILL_MODAL_CLOSE,
 } from './shared/tokens/kill.tokens';
 import { KillComponent } from './game/kill/kill.component';
+import { IdleComponent } from './game/idle/idle.component';
 
 interface ModalConfig {
   panelClass?: string;
@@ -40,6 +41,22 @@ export class CommonService {
   constructor(private overlay: Overlay) {}
   alertOverlayRef?: OverlayRef;
   killOverlayRef?: OverlayRef;
+  idleOverlayRef?: OverlayRef;
+
+  openIdleModal() {
+    if (!this.idleOverlayRef) {
+      const config: ModalConfig = { backdropClass: 'purple-backdrop' };
+      const modalConfig = { ...DEFAULT_CONFIG, ...config };
+      this.idleOverlayRef = this.createOverlay(modalConfig);
+
+      const idleModalPortal = new ComponentPortal(IdleComponent);
+      this.idleOverlayRef.attach(idleModalPortal);
+    }
+  }
+  closeIdleModal() {
+    this.killOverlayRef.dispose();
+    this.killOverlayRef = null;
+  }
 
   openGameKillModal(config: KillModalConfig = {}) {
     if (!this.killOverlayRef) {

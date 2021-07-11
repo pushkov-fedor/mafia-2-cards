@@ -1,7 +1,11 @@
 <div class="container">
-  <h3>Кого убить?</h3>
-  <ul>
-    <li *ngFor="let citizen of citizens">{{ citizen.name }}</li>
+  <h3 class="mb-3 text-center">Кого убить?</h3>
+  <ul class="mb-3 p-0">
+    <li *ngFor="let citizen of citizens" class="text-center">
+      {{ citizen.name }}
+    </li>
   </ul>
-  <button mat-raised-button (click)="closeModal()">Отправить</button>
+  <button mat-raised-button (click)="closeModal()" class="w-100">
+    Отправить
+  </button>
 </div>
