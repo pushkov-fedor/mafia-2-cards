@@ -1,0 +1,7 @@
+<div class="container">
+  <h3>Кого убить?</h3>
+  <ul>
+    <li *ngFor="let citizen of citizens">{{ citizen.name }}</li>
+  </ul>
+  <button mat-raised-button (click)="closeModal()">Отправить</button>
+</div>
