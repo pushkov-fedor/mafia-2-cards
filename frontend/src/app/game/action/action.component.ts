@@ -68,11 +68,16 @@ export class GameActionComponent {
   onCardSelect(cardIndex: number) {
     this.selectedCardIndex = cardIndex;
   }
-
   onKill() {
-    this.gameService
-      .kill(this.roomCode, this.selected.name)
-      .subscribe(() => void 0);
+    if (this.actionType == ActionType.MafiaKill) {
+      this.gameService
+        .killByMafia(this.roomCode, this.selected.name)
+        .subscribe(() => void 0);
+    } else {
+      this.gameService
+        .killByCivil(this.roomCode, this.selected.name)
+        .subscribe(() => void 0);
+    }
     this.commonService.openIdleModal();
     this.closeModal();
   }

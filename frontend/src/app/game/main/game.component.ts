@@ -126,6 +126,22 @@ export class GameComponent implements OnInit, OnDestroy {
               });
             }
             break;
+          case DayStage.CardRevealResult:
+            this.commonService.closeIdleModal();
+            this.commonService.closeGameActionModal();
+            break;
+          case DayStage.CitizenKill:
+            this.commonService.closeIdleModal();
+            this.commonService.openGameActionModal({
+              citizens: this.game.citizens,
+              roomCode: this.game.roomCode,
+              backdropClass: 'purple-backdrop',
+              actionType: ActionType.CivilKill,
+              myCitizen: this.citizen,
+            });
+            break;
+          case DayStage.Finish:
+            this.commonService.closeIdleModal();
         }
       });
   }

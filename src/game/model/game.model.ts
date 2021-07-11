@@ -5,6 +5,7 @@ import { Card } from './card.model';
 import * as _ from 'lodash';
 import { Citizen } from './citizen.model';
 import { Day } from './day.model';
+import { DayStage } from './day-stage.model';
 
 export class Game {
   roomCode: string;
@@ -13,7 +14,13 @@ export class Game {
 
   citizenNamesToKill: string[] = [];
   mafiaVotes = 0;
+  civilVotes = 0;
 
+  get numberOfCivil() {
+    return this.citizens.filter((citizen) =>
+      citizen.cards.some((card) => !card.isRevealed),
+    ).length;
+  }
   get numberOfMafia() {
     return this.citizens.filter((citizen) =>
       citizen.cards.some(
@@ -44,6 +51,12 @@ export class Game {
   nextDayStage() {
     const day = _.last(this.days) as Day;
     day.nextStage(this.numberOfMafia, this.numberOfPolices);
+    if (day.currentStage == DayStage.CardRevealResult) {
+      setTimeout(() => this.nextDayStage(), 10 * 1000);
+    }
+    if (day.currentStage == DayStage.Finish) {
+      this.days.push(new Day(false));
+    }
   }
 
   activeDayLog(message: string) {
@@ -85,7 +98,7 @@ export class Game {
     return cardsShuffled.map((cardType) => new Card(cardType));
   }
 
-  kill(citizenName: string) {
+  killByMafia(citizenName: string) {
     this.mafiaVotes++;
     this.citizenNamesToKill.push(citizenName);
     if (this.mafiaVotes == this.numberOfMafia) {
@@ -103,5 +116,35 @@ export class Game {
       return nameToKill;
     }
     return '';
+  }
+
+  killByCivil(citizenName: string) {
+    this.civilVotes++;
+    this.citizenNamesToKill.push(citizenName);
+    if (this.civilVotes == this.numberOfCivil) {
+      const nameToKill = this.getNameToKillByCivil(this.citizenNamesToKill);
+      const citizen = this.citizens.find(
+        (citizen) => citizen.name == nameToKill,
+      );
+      citizen.shouldRevealCard = true;
+      this.civilVotes = 0;
+      this.citizenNamesToKill = [];
+      return nameToKill;
+    }
+    return '';
+  }
+
+  private getNameToKillByCivil(names: string[]) {
+    const grouped = _.groupBy(
+      names,
+      (name) => names.filter((n) => n == name).length,
+    );
+    const sorted = Object.entries(grouped).sort(
+      ([a], [b]) => Number(b) - Number(a),
+    );
+    const [numberOfOccurs, entries] = sorted[0];
+    const indexToTake = _.random(0, (entries as Array<any>).length - 1);
+    console.log(entries[indexToTake]);
+    return entries[indexToTake];
   }
 }

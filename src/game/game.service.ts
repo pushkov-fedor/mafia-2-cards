@@ -19,11 +19,21 @@ export class GameService {
     return game;
   }
 
-  killCitizen(roomCode: string, citizenName: string) {
+  killByMafia(roomCode: string, citizenName: string) {
     const game = this.getGameByRoomCode(roomCode);
-    const killedCitizen = game.kill(citizenName);
+    const killedCitizen = game.killByMafia(citizenName);
     if (killedCitizen) {
-      game.activeDayLog(`Сегодня убили "${killedCitizen}"`);
+      game.activeDayLog(`Сегодня мафия убила "${killedCitizen}"`);
+      game.nextDayStage();
+    }
+    return game;
+  }
+
+  killByCivil(roomCode: string, citizenName: string) {
+    const game = this.getGameByRoomCode(roomCode);
+    const killedCitizen = game.killByCivil(citizenName);
+    if (killedCitizen) {
+      game.activeDayLog(`Сегодня жители убили "${killedCitizen}"`);
       game.nextDayStage();
     }
     return game;
@@ -43,6 +53,7 @@ export class GameService {
     const citizen = game.citizens.find(
       (citizen) => citizen.name == citizenName,
     );
+    citizen.shouldRevealCard = false;
     const card = citizen.cards[cardIndex];
     card.isRevealed = true;
     game.activeDayLog(`Вскрытая карта: ${this.cardType2String(card.cardType)}`);

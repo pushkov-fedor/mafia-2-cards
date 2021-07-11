@@ -15,8 +15,15 @@ export class GameService {
     return this.http.get<Game>(`${BASE_URL}game/status/${roomCode}`);
   }
 
-  kill(roomCode: string, citizenName: string) {
-    return this.http.post<Game>(`${BASE_URL}game/killCitizen`, {
+  killByMafia(roomCode: string, citizenName: string) {
+    return this.http.post<Game>(`${BASE_URL}game/killByMafia`, {
+      roomCode,
+      citizenName,
+    });
+  }
+
+  killByCivil(roomCode: string, citizenName: string) {
+    return this.http.post<Game>(`${BASE_URL}game/killByCivil`, {
       roomCode,
       citizenName,
     });

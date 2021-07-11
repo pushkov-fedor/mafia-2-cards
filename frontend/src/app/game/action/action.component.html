@@ -31,7 +31,10 @@
     (click)="onKill()"
     class="w-100"
     [disabled]="!selected"
-    *ngIf="actionType == actionTypeEnum.MafiaKill"
+    *ngIf="
+      actionType == actionTypeEnum.MafiaKill ||
+      actionType == actionTypeEnum.CivilKill
+    "
   >
     УБИТЬ
   </button>

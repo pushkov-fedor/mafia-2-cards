@@ -6,8 +6,10 @@ export class Day {
     DayStage.MafiaKill,
     DayStage.PoliceCheck,
     DayStage.CardRevealRequest,
+    DayStage.CardRevealResult,
     DayStage.CitizenKill,
     DayStage.CardRevealRequest,
+    DayStage.CardRevealResult,
     DayStage.Finish,
   ];
   dayLog: string[];

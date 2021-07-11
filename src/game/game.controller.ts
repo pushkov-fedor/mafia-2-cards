@@ -13,9 +13,9 @@ export class GameController {
     return this.gameService.startGame(roomCode);
   }
 
-  @Post('killCitizen')
-  citizenKill(@Body() killCitizenDto: KillCitizenDto) {
-    return this.gameService.killCitizen(
+  @Post('killByMafia')
+  killByMafia(@Body() killCitizenDto: KillCitizenDto) {
+    return this.gameService.killByMafia(
       killCitizenDto.roomCode,
       killCitizenDto.citizenName,
     );
@@ -25,6 +25,14 @@ export class GameController {
   checkCitizen(@Body() checkCitizenDto: CheckCitizenDto) {
     const { roomCode, citizenName, cardIndex } = checkCitizenDto;
     return this.gameService.policeCheck(roomCode, citizenName, cardIndex);
+  }
+
+  @Post('killByCivil')
+  killByCivil(@Body() KillCitizenDto: KillCitizenDto) {
+    return this.gameService.killByCivil(
+      KillCitizenDto.roomCode,
+      KillCitizenDto.citizenName,
+    );
   }
 
   @Post('cardReveal')
