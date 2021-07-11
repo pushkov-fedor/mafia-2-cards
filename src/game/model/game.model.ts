@@ -11,6 +11,15 @@ export class Game {
   days: Day[] = [];
   citizens: Citizen[] = [];
 
+  citizenNamesToKill: string[] = [];
+  mafiaVotes = 0;
+
+  get numberOfMafia() {
+    return this.citizens.filter((citizen) =>
+      citizen.cards.some((card) => card.cardType == CardType.MAFIA),
+    ).length;
+  }
+
   constructor(room: Room) {
     this.roomCode = room.code;
     const { players, numberOfMafia, numberOfPlayers, numberOfPolices } = room;
@@ -55,5 +64,25 @@ export class Game {
     return (_.shuffle(cards) as CardType[]).map(
       (cardType) => new Card(cardType),
     );
+  }
+
+  kill(citizenName: string) {
+    this.mafiaVotes++;
+    this.citizenNamesToKill.push(citizenName);
+    if (this.mafiaVotes == this.numberOfMafia) {
+      const citizenIndexToKill = _.random(
+        0,
+        this.citizenNamesToKill.length - 1,
+      );
+      const nameToKill = this.citizenNamesToKill[citizenIndexToKill];
+      const citizen = this.citizens.find(
+        (citizen) => citizen.name == nameToKill,
+      );
+      citizen.shouldRevealCard = true;
+      this.mafiaVotes = 0;
+      this.citizenNamesToKill = [];
+      return nameToKill;
+    }
+    return '';
   }
 }

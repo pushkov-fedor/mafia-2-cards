@@ -21,12 +21,11 @@ export class GameService {
 
   killCitizen(roomCode: string, citizenName: string) {
     const game = this.getGameByRoomCode(roomCode);
-    const citizen = game.citizens.find(
-      (citizen) => citizen.name == citizenName,
-    );
-    citizen.shouldRevealCard = true;
-    game.nextDayStage();
-    game.activeDayLog(`Сегодня убили ${citizen.name}`);
+    const killedCitizen = game.kill(citizenName);
+    if (killedCitizen) {
+      game.activeDayLog(`Сегодня убили "${killedCitizen}"`);
+      game.nextDayStage();
+    }
     return game;
   }
 

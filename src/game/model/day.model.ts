@@ -26,13 +26,16 @@ export class Day {
     if (isFirstDay) {
       this.log('Пока ничего не произошло');
       setTimeout(() => {
-        this.nextStage();
+        this.currentStageIndex = 4;
       }, 15 * 1000);
     }
   }
 
   nextStage() {
     this.currentStageIndex++;
+    if (this.currentStage == DayStage.PoliceCheck) {
+      this.currentStageIndex++;
+    }
     if (this.currentStage == DayStage.CardRevealRequest) {
       this.log('Ждем вскрытия карт');
     }

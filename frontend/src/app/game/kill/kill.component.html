@@ -1,11 +1,21 @@
 <div class="container">
   <h3 class="mb-3 text-center">Кого убить?</h3>
   <ul class="mb-3 p-0">
-    <li *ngFor="let citizen of citizens" class="text-center">
+    <li
+      *ngFor="let citizen of citizens"
+      class="text-center mb-2"
+      (click)="onSelect(citizen)"
+      [ngClass]="{ selected: citizen.name == selected?.name }"
+    >
       {{ citizen.name }}
     </li>
   </ul>
-  <button mat-raised-button (click)="closeModal()" class="w-100">
-    Отправить
+  <button
+    mat-raised-button
+    (click)="onKill()"
+    class="w-100"
+    [disabled]="!selected"
+  >
+    УБИТЬ
   </button>
 </div>

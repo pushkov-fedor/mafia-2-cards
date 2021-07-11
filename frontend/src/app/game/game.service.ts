@@ -13,4 +13,11 @@ export class GameService {
   getGameStatus(roomCode: string) {
     return this.http.get<Game>(`${BASE_URL}game/status/${roomCode}`);
   }
+
+  kill(roomCode: string, citizenName: string) {
+    return this.http.post<Game>(`${BASE_URL}game/killCitizen`, {
+      roomCode,
+      citizenName,
+    });
+  }
 }

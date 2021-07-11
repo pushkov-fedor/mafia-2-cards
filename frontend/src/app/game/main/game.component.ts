@@ -48,6 +48,9 @@ export class GameComponent implements OnInit, OnDestroy {
   get daysReversed(): Day[] {
     return this.days.reverse();
   }
+  get isMafia() {
+    return this.citizen.cards.some((card) => card.cardType == CardType.MAFIA);
+  }
 
   currentDayStage = new BehaviorSubject<DayStage>(null);
 
@@ -72,12 +75,19 @@ export class GameComponent implements OnInit, OnDestroy {
         distinctUntilChanged(),
       )
       .subscribe((stage) => {
-        console.log(stage);
         if (stage == DayStage.MafiaKill) {
-          this.commonService.openGameKillModal({
-            citizens: this.game.citizens,
-            backdropClass: 'purple-backdrop',
-          });
+          if (this.isMafia) {
+            this.commonService.openGameKillModal({
+              citizens: this.game.citizens,
+              roomCode: this.game.roomCode,
+              backdropClass: 'purple-backdrop',
+            });
+          } else {
+            this.commonService.openIdleModal();
+          }
+        }
+        if (stage == DayStage.CardRevealRequest) {
+          this.commonService.closeIdleModal();
         }
       });
   }

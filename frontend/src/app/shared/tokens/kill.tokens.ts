@@ -7,3 +7,6 @@ export const KILL_MODAL_CITIZENS = new InjectionToken<Citizen[]>(
 export const KILL_MODAL_CLOSE = new InjectionToken<() => void>(
   'KILL_MODAL_CLOSE',
 );
+export const KILL_MODAL_ROOM_CODE = new InjectionToken<string>(
+  'KILL_MODAL_ROOM_CODE',
+);

@@ -10,6 +10,7 @@ import { Citizen } from './shared/models/citizen.model';
 import {
   KILL_MODAL_CITIZENS,
   KILL_MODAL_CLOSE,
+  KILL_MODAL_ROOM_CODE,
 } from './shared/tokens/kill.tokens';
 import { KillComponent } from './game/kill/kill.component';
 import { IdleComponent } from './game/idle/idle.component';
@@ -26,6 +27,7 @@ interface AlertModalConfig extends ModalConfig {
 
 interface KillModalConfig extends ModalConfig {
   citizens?: Citizen[];
+  roomCode?: string;
 }
 
 const DEFAULT_CONFIG: ModalConfig = {
@@ -54,8 +56,8 @@ export class CommonService {
     }
   }
   closeIdleModal() {
-    this.killOverlayRef.dispose();
-    this.killOverlayRef = null;
+    this.idleOverlayRef.dispose();
+    this.idleOverlayRef = null;
   }
 
   openGameKillModal(config: KillModalConfig = {}) {
@@ -145,6 +147,10 @@ export class CommonService {
         {
           provide: KILL_MODAL_CLOSE,
           useValue: this.closeGameKillModal.bind(this),
+        },
+        {
+          provide: KILL_MODAL_ROOM_CODE,
+          useValue: config.roomCode,
         },
       ],
     });
