@@ -5,8 +5,8 @@
     </h3>
   </div>
 
-  <div class="day-card p-4" *ngFor="let day of daysReversed; let i = index">
-    <h4 class="w-100 text-center">День {{ i + 1 }}</h4>
+  <div class="day-card p-4" *ngFor="let day of daysReversed">
+    <h4 class="w-100 text-center">День {{ getDayNumber(day) }}</h4>
     <p class="day-event w-100 text-center" *ngFor="let log of day.dayLog">
       {{ log }}
     </p>

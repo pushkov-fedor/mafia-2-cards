@@ -157,6 +157,11 @@ export class GameComponent implements OnInit, OnDestroy {
     }
   }
 
+  getDayNumber(day: Day) {
+    const index = this.days.findIndex((d) => d == day);
+    return index + 1;
+  }
+
   ngOnDestroy() {
     this.timerSub?.unsubscribe();
   }
