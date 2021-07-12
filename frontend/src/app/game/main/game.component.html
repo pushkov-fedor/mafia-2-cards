@@ -5,6 +5,15 @@
     </h3>
   </div>
 
+  <a
+    mat-raised-button
+    color="primary"
+    class="mb-3 w-100"
+    [disabled]="startNightResponseSend"
+    (click)="onStartNight()"
+    >{{ startNightBtnText }}</a
+  >
+
   <div class="day-card p-4" *ngFor="let day of daysReversed">
     <h4 class="w-100 text-center">День {{ getDayNumber(day) }}</h4>
     <p class="day-event w-100 text-center" *ngFor="let log of day.dayLog">

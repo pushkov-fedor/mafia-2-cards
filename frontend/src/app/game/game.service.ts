@@ -44,4 +44,10 @@ export class GameService {
       cardIndex,
     });
   }
+
+  startNight(roomCode) {
+    return this.http.post<Game>(`${BASE_URL}game/startNight`, {
+      roomCode,
+    });
+  }
 }

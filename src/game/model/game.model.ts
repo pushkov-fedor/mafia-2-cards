@@ -45,7 +45,7 @@ export class Game {
       numberOfPolices,
     );
     this.citizens = this.players2Citizens(players, cards);
-    this.days.push(new Day(true));
+    this.days.push(new Day());
   }
 
   nextDayStage() {
@@ -55,7 +55,7 @@ export class Game {
       setTimeout(() => this.nextDayStage(), 10 * 1000);
     }
     if (day.currentStage == DayStage.Finish) {
-      this.days.push(new Day(false));
+      this.days.push(new Day());
     }
   }
 
@@ -132,6 +132,13 @@ export class Game {
       return nameToKill;
     }
     return '';
+  }
+
+  startNight() {
+    this.civilVotes++;
+    if (this.civilVotes == this.numberOfCivil) {
+      setTimeout(() => this.nextDayStage(), 5 * 1000);
+    }
   }
 
   private getNameToKillByCivil(names: string[]) {

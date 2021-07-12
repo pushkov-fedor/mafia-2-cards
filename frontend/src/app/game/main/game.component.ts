@@ -12,6 +12,8 @@ import * as _ from 'lodash';
 import { DayStage } from 'src/app/shared/models/day-stage.model';
 import { CommonService } from 'src/app/common.service';
 import { ActionType } from 'src/app/shared/models/action.modal';
+import { Howl } from 'howler';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'game',
@@ -23,6 +25,7 @@ export class GameComponent implements OnInit, OnDestroy {
     private roomService: RoomService,
     private gameService: GameService,
     private commonService: CommonService,
+    private router: Router,
   ) {}
 
   roomCode: string;
@@ -62,12 +65,31 @@ export class GameComponent implements OnInit, OnDestroy {
   get shouldRevealCard() {
     return this.citizen.shouldRevealCard;
   }
+  get civilVotes() {
+    return this.game?.civilVotes;
+  }
+  get numberOfAliveCivils() {
+    return this.game?.citizens.filter((citizen) =>
+      citizen.cards.some((card) => !card.isRevealed),
+    ).length;
+  }
+
+  get startNightBtnText() {
+    return this.civilVotes > 0
+      ? `НАЧАТЬ НОЧЬ (${this.civilVotes}/${this.numberOfAliveCivils})`
+      : 'НАЧАТЬ НОЧЬ';
+  }
+  startNightResponseSend = false;
 
   currentDayStage = new BehaviorSubject<DayStage>(null);
 
   ngOnInit() {
     const room = this.roomService.room.getValue();
     const player = this.roomService.player.getValue();
+    if (!room) {
+      this.router.navigate(['']);
+      return;
+    }
     this.roomCode = room.code;
     this.playerName = player.name;
 
@@ -87,6 +109,9 @@ export class GameComponent implements OnInit, OnDestroy {
       )
       .subscribe((stage) => {
         switch (stage) {
+          case DayStage.CitizenWelcome:
+            this.startNightResponseSend = false;
+            break;
           case DayStage.MafiaKill:
             if (this.isMafia) {
               this.commonService.openGameActionModal({
@@ -116,6 +141,10 @@ export class GameComponent implements OnInit, OnDestroy {
           case DayStage.CardRevealRequest:
             this.commonService.closeIdleModal();
             this.commonService.closeGameActionModal();
+            const sound = new Howl({
+              src: ['../../../assets/audio.mp3'],
+            });
+            sound.play();
             if (this.shouldRevealCard) {
               this.commonService.openGameActionModal({
                 citizens: this.game.citizens,
@@ -144,6 +173,13 @@ export class GameComponent implements OnInit, OnDestroy {
             this.commonService.closeIdleModal();
         }
       });
+  }
+
+  onStartNight() {
+    this.startNightResponseSend = true;
+    this.gameService
+      .startNight(this.roomCode)
+      .subscribe((res) => console.log(res));
   }
 
   cardType2String(cardType: CardType) {

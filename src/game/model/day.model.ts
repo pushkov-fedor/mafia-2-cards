@@ -13,22 +13,12 @@ export class Day {
     DayStage.Finish,
   ];
   dayLog: string[] = [];
-  currentStageIndex: number;
+  currentStageIndex = 0;
   killedByCitizenKillStage: string;
   killedByMafiaKillStage: string;
 
   get currentStage() {
     return this.dayRoutine[this.currentStageIndex];
-  }
-
-  constructor(isFirstDay = false) {
-    this.currentStageIndex = isFirstDay ? 0 : 1;
-    if (isFirstDay) {
-      this.log('Пока ничего не произошло');
-      setTimeout(() => {
-        this.currentStageIndex = 1;
-      }, 15 * 1000);
-    }
   }
 
   nextStage(numberOfMafia: number, numberOfPolices: number) {

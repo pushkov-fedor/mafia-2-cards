@@ -3,6 +3,7 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { KillCitizenDto } from './dto/kill-player.dto';
 import { CheckCitizenDto } from './dto/check-citizen.dto';
 import { CardRevealDto } from './dto/card-reveal.dto';
+import { StartNightDto } from './dto/start-night.dto';
 
 @Controller('game')
 export class GameController {
@@ -39,6 +40,11 @@ export class GameController {
   cardReveal(@Body() cardRevealDto: CardRevealDto) {
     const { roomCode, citizenName, cardIndex } = cardRevealDto;
     return this.gameService.cardReveal(roomCode, citizenName, cardIndex);
+  }
+
+  @Post('startNight')
+  startNight(@Body() startNightDto: StartNightDto) {
+    return this.gameService.startNight(startNightDto.roomCode);
   }
 
   @Get('status/:roomCode')

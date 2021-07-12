@@ -5,4 +5,5 @@ export class Game {
   roomCode: string;
   days: Day[] = [];
   citizens: Citizen[] = [];
+  civilVotes: number;
 }

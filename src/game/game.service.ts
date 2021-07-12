@@ -19,6 +19,12 @@ export class GameService {
     return game;
   }
 
+  startNight(roomCode: string) {
+    const game = this.getGameByRoomCode(roomCode);
+    game.startNight();
+    return game;
+  }
+
   killByMafia(roomCode: string, citizenName: string) {
     const game = this.getGameByRoomCode(roomCode);
     const killedCitizen = game.killByMafia(citizenName);
