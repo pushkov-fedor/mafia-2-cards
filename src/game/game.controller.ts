@@ -4,6 +4,7 @@ import { KillCitizenDto } from './dto/kill-player.dto';
 import { CheckCitizenDto } from './dto/check-citizen.dto';
 import { CardRevealDto } from './dto/card-reveal.dto';
 import { StartNightDto } from './dto/start-night.dto';
+import { StartJudgeDto } from './dto/start-judge.dto';
 
 @Controller('game')
 export class GameController {
@@ -45,6 +46,11 @@ export class GameController {
   @Post('startNight')
   startNight(@Body() startNightDto: StartNightDto) {
     return this.gameService.startNight(startNightDto.roomCode);
+  }
+
+  @Post('startJudge')
+  startJudge(@Body() startJudgeDto: StartJudgeDto) {
+    return this.gameService.startJudge(startJudgeDto.roomCode);
   }
 
   @Get('status/:roomCode')

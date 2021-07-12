@@ -63,11 +63,13 @@ export class Game {
     }
     const day = _.last(this.days) as Day;
     day.nextStage(this.numberOfMafia, this.numberOfPolices);
-    if (day.currentStage == DayStage.CardRevealResult) {
-      setTimeout(() => this.nextDayStage(), 10 * 1000);
+    if (day.currentStageIndex == 7) {
+      this.nextDayStage();
+      return;
     }
     if (day.currentStage == DayStage.Finish) {
       this.days.push(new Day());
+      return;
     }
   }
 
@@ -151,6 +153,14 @@ export class Game {
     if (this.civilVotes == this.numberOfCivil) {
       this.civilVotes = 0;
       setTimeout(() => this.nextDayStage(), 5 * 1000);
+    }
+  }
+
+  startJudge() {
+    this.civilVotes++;
+    if (this.civilVotes == this.numberOfCivil) {
+      this.civilVotes = 0;
+      this.nextDayStage();
     }
   }
 

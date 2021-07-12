@@ -29,6 +29,7 @@ export class GameComponent implements OnInit, OnDestroy {
     private router: Router,
   ) {}
 
+  dayStage = DayStage;
   roomCode: string;
   playerName: string;
 
@@ -74,13 +75,24 @@ export class GameComponent implements OnInit, OnDestroy {
       citizen.cards.some((card) => !card.isRevealed),
     ).length;
   }
-
+  get currentDayStageValue() {
+    return this.currentDayStage.getValue();
+  }
   get startNightBtnText() {
     return this.civilVotes > 0
       ? `НАЧАТЬ НОЧЬ (${this.civilVotes}/${this.numberOfAliveCivils})`
       : 'НАЧАТЬ НОЧЬ';
   }
-  startNightResponseSend = false;
+  get startJudgeBtnText() {
+    return this.civilVotes > 0
+      ? `НАЧАТЬ СУД (${this.civilVotes}/${this.numberOfAliveCivils})`
+      : 'НАЧАТЬ СУД';
+  }
+
+  isCardsVisible = true;
+
+  startNightRequestSend = false;
+  startJudgeRequestSend = false;
 
   currentDayStage = new BehaviorSubject<DayStage>(null);
 
@@ -109,6 +121,7 @@ export class GameComponent implements OnInit, OnDestroy {
             myCitizen: this.citizen,
             gameResultMessage: this.game.gameResultMessage,
           });
+          this.timerSub?.unsubscribe();
         } else {
           this.currentDayStage.next(
             this.currentDay.dayRoutine[this.currentDay.currentStageIndex],
@@ -124,7 +137,9 @@ export class GameComponent implements OnInit, OnDestroy {
       .subscribe((stage) => {
         switch (stage) {
           case DayStage.CitizenWelcome:
-            this.startNightResponseSend = false;
+            this.startNightRequestSend = false;
+            this.commonService.closeIdleModal();
+            this.commonService.closeGameActionModal();
             break;
           case DayStage.MafiaKill:
             if (this.isMafia) {
@@ -193,9 +208,16 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   onStartNight() {
-    this.startNightResponseSend = true;
+    this.startNightRequestSend = true;
     this.gameService
       .startNight(this.roomCode)
+      .subscribe((res) => console.log(res));
+  }
+
+  onStartJudge() {
+    this.startJudgeRequestSend = true;
+    this.gameService
+      .startJudge(this.roomCode)
       .subscribe((res) => console.log(res));
   }
 

@@ -107,6 +107,7 @@ export class GameActionComponent {
   }
   onGameFinished() {
     this.router.navigate(['']);
+    this.closeModal();
   }
 
   cardType2String(cardType: CardType) {

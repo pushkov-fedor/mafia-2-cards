@@ -25,6 +25,12 @@ export class GameService {
     return game;
   }
 
+  startJudge(roomCode) {
+    const game = this.getGameByRoomCode(roomCode);
+    game.startJudge();
+    return game;
+  }
+
   killByMafia(roomCode: string, citizenName: string) {
     const game = this.getGameByRoomCode(roomCode);
     const killedCitizen = game.killByMafia(citizenName);

@@ -50,4 +50,10 @@ export class GameService {
       roomCode,
     });
   }
+
+  startJudge(roomCode) {
+    return this.http.post<Game>(`${BASE_URL}game/startJudge`, {
+      roomCode,
+    });
+  }
 }

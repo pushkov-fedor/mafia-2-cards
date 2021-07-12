@@ -25,6 +25,7 @@ export class Day {
     this.currentStageIndex++;
     if (this.currentStage == DayStage.PoliceCheck && numberOfPolices == 0) {
       this.nextStage(numberOfMafia, numberOfPolices);
+      return;
     }
     if (this.currentStage == DayStage.CardRevealRequest) {
       this.log('Ждем вскрытия карт');
