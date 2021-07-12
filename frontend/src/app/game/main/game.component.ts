@@ -14,6 +14,7 @@ import { CommonService } from 'src/app/common.service';
 import { ActionType } from 'src/app/shared/models/action.modal';
 import { Howl } from 'howler';
 import { Router } from '@angular/router';
+import { GameStatus } from 'src/app/shared/models/game-status.model';
 
 @Component({
   selector: 'game',
@@ -97,9 +98,22 @@ export class GameComponent implements OnInit, OnDestroy {
       .pipe(switchMap(() => this.gameService.getGameStatus(this.roomCode)))
       .subscribe((game: Game) => {
         this.game = game;
-        this.currentDayStage.next(
-          this.currentDay.dayRoutine[this.currentDay.currentStageIndex],
-        );
+        if (this.game.gameStatus == GameStatus.FINISHED) {
+          this.commonService.closeIdleModal();
+          this.commonService.closeGameActionModal();
+          this.commonService.openGameActionModal({
+            citizens: this.game.citizens,
+            roomCode: this.game.roomCode,
+            backdropClass: 'purple-backdrop',
+            actionType: ActionType.GameFinished,
+            myCitizen: this.citizen,
+            gameResultMessage: this.game.gameResultMessage,
+          });
+        } else {
+          this.currentDayStage.next(
+            this.currentDay.dayRoutine[this.currentDay.currentStageIndex],
+          );
+        }
       });
 
     this.currentDayStage
@@ -141,10 +155,12 @@ export class GameComponent implements OnInit, OnDestroy {
           case DayStage.CardRevealRequest:
             this.commonService.closeIdleModal();
             this.commonService.closeGameActionModal();
-            const sound = new Howl({
-              src: ['../../../assets/audio.mp3'],
-            });
-            sound.play();
+            setTimeout(() => {
+              const sound = new Howl({
+                src: ['../../../assets/audio.mp3'],
+              });
+              sound.play();
+            }, 2 * 1000);
             if (this.shouldRevealCard) {
               this.commonService.openGameActionModal({
                 citizens: this.game.citizens,
@@ -171,6 +187,7 @@ export class GameComponent implements OnInit, OnDestroy {
             break;
           case DayStage.Finish:
             this.commonService.closeIdleModal();
+            break;
         }
       });
   }

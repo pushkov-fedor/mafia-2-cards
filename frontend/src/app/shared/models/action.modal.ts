@@ -3,4 +3,5 @@ export enum ActionType {
   PoliceCheck,
   CardReveal,
   CivilKill,
+  GameFinished,
 }

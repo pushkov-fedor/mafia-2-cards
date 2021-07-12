@@ -1,8 +1,18 @@
 <div class="container">
   <h3 class="mb-3 text-center">{{ actionTitle }}</h3>
+  <h4
+    class="mb-3 text-center"
+    *ngIf="actionType == actionTypeEnum.GameFinished"
+  >
+    {{ gameResultMessage }}
+  </h4>
   <ul
     class="mb-3 p-0"
-    *ngIf="!policeCheckResult && actionType != actionTypeEnum.CardReveal"
+    *ngIf="
+      !policeCheckResult &&
+      actionType != actionTypeEnum.CardReveal &&
+      actionType != actionTypeEnum.GameFinished
+    "
   >
     <li
       *ngFor="let citizen of citizens"
@@ -64,5 +74,13 @@
     (click)="onCardReveal()"
   >
     ПОКАЗАТЬ КАРТУ
+  </button>
+  <button
+    mat-raised-button
+    class="w-100"
+    *ngIf="actionType == actionTypeEnum.GameFinished"
+    (click)="onGameFinished()"
+  >
+    НА ГЛАВНУЮ
   </button>
 </div>

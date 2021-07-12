@@ -6,12 +6,14 @@ import * as _ from 'lodash';
 import { Citizen } from './citizen.model';
 import { Day } from './day.model';
 import { DayStage } from './day-stage.model';
+import { GameStatus } from './game-status.model';
 
 export class Game {
   roomCode: string;
+  gameStatus: GameStatus = GameStatus.ACTIVE;
+  gameResultMessage = '';
   days: Day[] = [];
   citizens: Citizen[] = [];
-
   citizenNamesToKill: string[] = [];
   mafiaVotes = 0;
   civilVotes = 0;
@@ -49,6 +51,16 @@ export class Game {
   }
 
   nextDayStage() {
+    if (this.numberOfCivil < this.numberOfMafia) {
+      this.gameStatus = GameStatus.FINISHED;
+      this.gameResultMessage = 'Победила мафия';
+      return;
+    }
+    if (this.numberOfMafia == 0) {
+      this.gameStatus = GameStatus.FINISHED;
+      this.gameResultMessage = 'Победили мирные жители';
+      return;
+    }
     const day = _.last(this.days) as Day;
     day.nextStage(this.numberOfMafia, this.numberOfPolices);
     if (day.currentStage == DayStage.CardRevealResult) {
@@ -137,6 +149,7 @@ export class Game {
   startNight() {
     this.civilVotes++;
     if (this.civilVotes == this.numberOfCivil) {
+      this.civilVotes = 0;
       setTimeout(() => this.nextDayStage(), 5 * 1000);
     }
   }

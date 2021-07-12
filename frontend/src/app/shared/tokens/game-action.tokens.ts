@@ -17,3 +17,6 @@ export const GAME_ACTION_MODAL_ACTION_TYPE = new InjectionToken<ActionType>(
 export const GAME_ACTION_MODAL_MY_CITIZEN = new InjectionToken<Citizen>(
   'GAME_ACTION_MODAL_MY_CITIZEN',
 );
+export const GAME_ACTION_MODAL_RESULT_MESSAGE = new InjectionToken<string>(
+  'GAME_ACTION_MODAL_RESULT_MESSAGE',
+);

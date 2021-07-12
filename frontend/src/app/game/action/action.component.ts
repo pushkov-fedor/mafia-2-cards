@@ -1,4 +1,5 @@
 import { Component, Inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonService } from 'src/app/common.service';
 import { ActionType } from 'src/app/shared/models/action.modal';
 import { CardType } from 'src/app/shared/models/card-type.model';
@@ -9,6 +10,7 @@ import {
   GAME_ACTION_MODAL_CITIZENS,
   GAME_ACTION_MODAL_CLOSE,
   GAME_ACTION_MODAL_MY_CITIZEN,
+  GAME_ACTION_MODAL_RESULT_MESSAGE,
   GAME_ACTION_MODAL_ROOM_CODE,
 } from 'src/app/shared/tokens/game-action.tokens';
 import { GameService } from '../game.service';
@@ -25,8 +27,10 @@ export class GameActionComponent {
     @Inject(GAME_ACTION_MODAL_ROOM_CODE) public roomCode: string,
     @Inject(GAME_ACTION_MODAL_ACTION_TYPE) public actionType: ActionType,
     @Inject(GAME_ACTION_MODAL_MY_CITIZEN) public myCitizen: Citizen,
+    @Inject(GAME_ACTION_MODAL_RESULT_MESSAGE) public gameResultMessage: string,
     private gameService: GameService,
     private commonService: CommonService,
+    private router: Router,
   ) {}
 
   get actionListItems() {
@@ -37,6 +41,8 @@ export class GameActionComponent {
         return this.citizens;
       case ActionType.CardReveal:
         return this.myCitizen.cards;
+      case ActionType.GameFinished:
+        return [];
     }
   }
 
@@ -53,6 +59,8 @@ export class GameActionComponent {
         return 'Вскройте карту';
       case ActionType.CivilKill:
         return 'Кого осудить?';
+      case ActionType.GameFinished:
+        return 'Игра окончена';
     }
   }
 
@@ -96,6 +104,9 @@ export class GameActionComponent {
       .subscribe(() => void 0);
     this.commonService.openIdleModal();
     this.closeModal();
+  }
+  onGameFinished() {
+    this.router.navigate(['']);
   }
 
   cardType2String(cardType: CardType) {
