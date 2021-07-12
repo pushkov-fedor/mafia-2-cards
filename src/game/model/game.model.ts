@@ -51,7 +51,7 @@ export class Game {
   }
 
   nextDayStage() {
-    if (this.numberOfCivil < this.numberOfMafia) {
+    if (this.numberOfCivil == this.numberOfMafia) {
       this.gameStatus = GameStatus.FINISHED;
       this.gameResultMessage = 'Победила мафия';
       return;

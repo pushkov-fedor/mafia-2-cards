@@ -71,9 +71,15 @@ export class GameActionComponent {
   policeCheckResult: Card;
 
   onCitizenSelect(citizen: Citizen) {
+    if (this.isCitizenDead(citizen)) {
+      return;
+    }
     this.selected = citizen;
   }
   onCardSelect(cardIndex: number) {
+    if (this.myCitizen.cards[cardIndex].isRevealed) {
+      return;
+    }
     this.selectedCardIndex = cardIndex;
   }
   onKill() {
@@ -108,6 +114,10 @@ export class GameActionComponent {
   onGameFinished() {
     this.router.navigate(['']);
     this.closeModal();
+  }
+
+  isCitizenDead(citizen: Citizen) {
+    return citizen.cards.every((card) => card.isRevealed);
   }
 
   cardType2String(cardType: CardType) {

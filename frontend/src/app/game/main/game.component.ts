@@ -42,6 +42,12 @@ export class GameComponent implements OnInit, OnDestroy {
       (citizen) => citizen.name == this.playerName,
     );
   }
+  get isAlive() {
+    if (!this.citizen) {
+      return true;
+    }
+    return this.citizen?.cards.some((card) => !card.isRevealed);
+  }
   get cards(): Card[] {
     return this.citizen?.cards ?? [];
   }
@@ -52,7 +58,7 @@ export class GameComponent implements OnInit, OnDestroy {
     return _.last(this.days);
   }
   get daysReversed(): Day[] {
-    return this.days.reverse();
+    return [...this.days].reverse();
   }
   get isMafia() {
     return this.citizen.cards.some(
@@ -106,7 +112,7 @@ export class GameComponent implements OnInit, OnDestroy {
     this.roomCode = room.code;
     this.playerName = player.name;
 
-    this.timerSub = timer(0, 2000)
+    this.timerSub = timer(0, 1000)
       .pipe(switchMap(() => this.gameService.getGameStatus(this.roomCode)))
       .subscribe((game: Game) => {
         this.game = game;
@@ -135,9 +141,15 @@ export class GameComponent implements OnInit, OnDestroy {
         distinctUntilChanged(),
       )
       .subscribe((stage) => {
+        if (!this.isAlive) {
+          this.commonService.closeIdleModal();
+          this.commonService.closeGameActionModal();
+          return;
+        }
         switch (stage) {
           case DayStage.CitizenWelcome:
             this.startNightRequestSend = false;
+            this.startJudgeRequestSend = false;
             this.commonService.closeIdleModal();
             this.commonService.closeGameActionModal();
             break;

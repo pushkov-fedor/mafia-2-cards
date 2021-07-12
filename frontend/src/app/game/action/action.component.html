@@ -18,7 +18,10 @@
       *ngFor="let citizen of citizens"
       class="text-center mb-2"
       (click)="onCitizenSelect(citizen)"
-      [ngClass]="{ selected: citizen.name == selected?.name }"
+      [ngClass]="{
+        selected: citizen.name == selected?.name,
+        'text-danger': isCitizenDead(citizen)
+      }"
     >
       {{ citizen.name }}
     </li>
@@ -31,7 +34,10 @@
       *ngFor="let card of myCitizen.cards; let i = index"
       class="text-center mb-2"
       (click)="onCardSelect(i)"
-      [ngClass]="{ selected: i == selectedCardIndex }"
+      [ngClass]="{
+        selected: i == selectedCardIndex,
+        'text-danger': card.isRevealed
+      }"
     >
       {{ cardType2String(card.cardType) }}
     </li>

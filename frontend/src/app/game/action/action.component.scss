@@ -22,6 +22,9 @@
       &.selected {
         color: white;
       }
+      &.text-danger {
+        opacity: 0.5;
+      }
     }
   }
 }

@@ -10,7 +10,9 @@
     color="primary"
     class="mb-3 w-100"
     [disabled]="
-      startNightRequestSend || currentDayStageValue != dayStage.CitizenWelcome
+      startNightRequestSend ||
+      currentDayStageValue != dayStage.CitizenWelcome ||
+      !isAlive
     "
     (click)="onStartNight()"
   >
@@ -21,7 +23,9 @@
     color="primary"
     class="mb-3 w-100"
     [disabled]="
-      startJudgeRequestSend || currentDayStageValue != dayStage.CardRevealResult
+      startJudgeRequestSend ||
+      currentDayStageValue != dayStage.CardRevealResult ||
+      !isAlive
     "
     (click)="onStartJudge()"
   >
