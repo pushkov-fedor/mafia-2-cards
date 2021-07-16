@@ -10,8 +10,8 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RoomService", function() { return RoomService; });
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../constants */ "l207");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ "qCKp");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "qCKp");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../environments/environment */ "AytR");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
 
@@ -21,18 +21,17 @@ __webpack_require__.r(__webpack_exports__);
 class RoomService {
     constructor(http) {
         this.http = http;
-        this.room = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](null);
-        this.player = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](null);
+        this.room = new rxjs__WEBPACK_IMPORTED_MODULE_0__["BehaviorSubject"](null);
+        this.player = new rxjs__WEBPACK_IMPORTED_MODULE_0__["BehaviorSubject"](null);
     }
     waitRoom(code, playerName) {
-        return this.http.post(`${_constants__WEBPACK_IMPORTED_MODULE_0__["BASE_URL"]}room/wait`, {
+        return this.http.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].backendUrl}room/wait`, {
             code,
             playerName,
         });
     }
     createRoom(creatorName, players, mafia, polices) {
-        console.log(_constants__WEBPACK_IMPORTED_MODULE_0__["BASE_URL"]);
-        return this.http.post(`${_constants__WEBPACK_IMPORTED_MODULE_0__["BASE_URL"]}room/create`, {
+        return this.http.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].backendUrl}room/create`, {
             creatorName,
             players,
             mafia,
@@ -40,19 +39,19 @@ class RoomService {
         });
     }
     joinRoom(code, playerName) {
-        return this.http.post(`${_constants__WEBPACK_IMPORTED_MODULE_0__["BASE_URL"]}room/join`, {
+        return this.http.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].backendUrl}room/join`, {
             code,
             playerName,
         });
     }
     startRoom(code) {
-        return this.http.post(`${_constants__WEBPACK_IMPORTED_MODULE_0__["BASE_URL"]}game/start/${code}`, {});
+        return this.http.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].backendUrl}game/start/${code}`, {});
     }
     getAll() {
-        return this.http.get(`${_constants__WEBPACK_IMPORTED_MODULE_0__["BASE_URL"]}room`);
+        return this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].backendUrl}room`);
     }
     get(code, params) {
-        return this.http.get(`${_constants__WEBPACK_IMPORTED_MODULE_0__["BASE_URL"]}room/${code}`, {
+        return this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].backendUrl}room/${code}`, {
             params,
         });
     }

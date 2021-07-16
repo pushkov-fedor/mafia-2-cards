@@ -22,7 +22,7 @@ module.exports = __webpack_require__(/*! C:\Users\pushk\Desktop\mafia-card-game\
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GameService", function() { return GameService; });
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "l207");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../environments/environment */ "AytR");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
 
@@ -33,41 +33,41 @@ class GameService {
         this.http = http;
     }
     getGameStatus(roomCode) {
-        return this.http.get(`${_constants__WEBPACK_IMPORTED_MODULE_0__["BASE_URL"]}game/status/${roomCode}`);
+        return this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_0__["environment"].backendUrl}game/status/${roomCode}`);
     }
     killByMafia(roomCode, citizenName) {
-        return this.http.post(`${_constants__WEBPACK_IMPORTED_MODULE_0__["BASE_URL"]}game/killByMafia`, {
+        return this.http.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_0__["environment"].backendUrl}game/killByMafia`, {
             roomCode,
             citizenName,
         });
     }
     killByCivil(roomCode, citizenName) {
-        return this.http.post(`${_constants__WEBPACK_IMPORTED_MODULE_0__["BASE_URL"]}game/killByCivil`, {
+        return this.http.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_0__["environment"].backendUrl}game/killByCivil`, {
             roomCode,
             citizenName,
         });
     }
     policeCheck(roomCode, citizenName, cardIndex) {
-        return this.http.post(`${_constants__WEBPACK_IMPORTED_MODULE_0__["BASE_URL"]}game/policeCheck`, {
+        return this.http.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_0__["environment"].backendUrl}game/policeCheck`, {
             roomCode,
             citizenName,
             cardIndex,
         });
     }
     cardReveal(roomCode, citizenName, cardIndex) {
-        return this.http.post(`${_constants__WEBPACK_IMPORTED_MODULE_0__["BASE_URL"]}game/cardReveal`, {
+        return this.http.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_0__["environment"].backendUrl}game/cardReveal`, {
             roomCode,
             citizenName,
             cardIndex,
         });
     }
     startNight(roomCode) {
-        return this.http.post(`${_constants__WEBPACK_IMPORTED_MODULE_0__["BASE_URL"]}game/startNight`, {
+        return this.http.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_0__["environment"].backendUrl}game/startNight`, {
             roomCode,
         });
     }
     startJudge(roomCode) {
-        return this.http.post(`${_constants__WEBPACK_IMPORTED_MODULE_0__["BASE_URL"]}game/startJudge`, {
+        return this.http.post(`${_environments_environment__WEBPACK_IMPORTED_MODULE_0__["environment"].backendUrl}game/startJudge`, {
             roomCode,
         });
     }
@@ -100,29 +100,6 @@ IdleComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComp
 
 /***/ }),
 
-/***/ "8zEt":
-/*!*********************************!*\
-  !*** ./src/app/window.token.ts ***!
-  \*********************************/
-/*! exports provided: WINDOW, WINDOW_PROVIDERS */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WINDOW", function() { return WINDOW; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WINDOW_PROVIDERS", function() { return WINDOW_PROVIDERS; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
-
-const WINDOW = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]('window');
-const windowProvider = {
-    provide: WINDOW,
-    useFactory: () => window,
-};
-const WINDOW_PROVIDERS = [windowProvider];
-
-
-/***/ }),
-
 /***/ "AytR":
 /*!*****************************************!*\
   !*** ./src/environments/environment.ts ***!
@@ -133,11 +110,14 @@ const WINDOW_PROVIDERS = [windowProvider];
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "environment", function() { return environment; });
+/* harmony import */ var _app_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../app/constants */ "l207");
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
+
 const environment = {
-    production: false
+    production: false,
+    backendUrl: _app_constants__WEBPACK_IMPORTED_MODULE_0__["BASE_URL"],
 };
 /*
  * For easier debugging in development mode, you can import the following file
@@ -562,9 +542,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/platform-browser/animations */ "R1ws");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
-/* harmony import */ var _window_token__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./window.token */ "8zEt");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/core */ "fXoL");
-
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ "fXoL");
 
 
 
@@ -576,8 +554,8 @@ __webpack_require__.r(__webpack_exports__);
 class AppModule {
 }
 AppModule.ɵfac = function AppModule_Factory(t) { return new (t || AppModule)(); };
-AppModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineNgModule"]({ type: AppModule, bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]] });
-AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineInjector"]({ providers: [_window_token__WEBPACK_IMPORTED_MODULE_7__["WINDOW_PROVIDERS"]], imports: [[
+AppModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineNgModule"]({ type: AppModule, bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]] });
+AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjector"]({ providers: [], imports: [[
             _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
@@ -586,7 +564,7 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineInjector
             _app_routing_module__WEBPACK_IMPORTED_MODULE_2__["AppRoutingModule"],
             _shared_shared_module__WEBPACK_IMPORTED_MODULE_0__["SharedModule"],
         ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵsetNgModuleScope"](AppModule, { declarations: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]], imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵsetNgModuleScope"](AppModule, { declarations: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]], imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
         _angular_common_http__WEBPACK_IMPORTED_MODULE_6__["HttpClientModule"],
@@ -1046,9 +1024,10 @@ GameActionComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefi
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BASE_URL", function() { return BASE_URL; });
-const windowLocationOrigin = window.location.origin;
-const BASE_URL = 'http://localhost:3000/api/';
-// export const BASE_URL = `${windowLocationOrigin}/api/`;
+/* harmony import */ var process__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! process */ "8oxB");
+/* harmony import */ var process__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(process__WEBPACK_IMPORTED_MODULE_0__);
+
+const BASE_URL = process__WEBPACK_IMPORTED_MODULE_0__["env"].BACKEND_URL || 'http://localhost:3000/api/';
 
 
 /***/ }),
