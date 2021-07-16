@@ -27,6 +27,7 @@ export class RoomService {
     mafia: number,
     polices: number,
   ) {
+    console.log(BASE_URL);
     return this.http.post<{ room: Room; player: Player }>(
       `${BASE_URL}room/create`,
       {
