@@ -165,26 +165,40 @@ export class GameComponent implements OnInit, OnDestroy {
             } else {
               this.commonService.openIdleModal();
             }
+            setTimeout(() => {
+              const sound = new Howl({
+                src: ['../../../assets/sueta.mp3'],
+              });
+              sound.play();
+            });
             break;
           case DayStage.PoliceCheck:
             if (this.isPolice) {
-              this.commonService.openGameActionModal({
-                citizens: this.game.citizens,
-                roomCode: this.game.roomCode,
-                backdropClass: 'purple-backdrop',
-                actionType: ActionType.PoliceCheck,
-                myCitizen: this.citizen,
-              });
+              setTimeout(() => {
+                this.commonService.openGameActionModal({
+                  citizens: this.game.citizens,
+                  roomCode: this.game.roomCode,
+                  backdropClass: 'purple-backdrop',
+                  actionType: ActionType.PoliceCheck,
+                  myCitizen: this.citizen,
+                });
+              }, 2 * 3000);
             } else {
               this.commonService.openIdleModal();
             }
+            setTimeout(() => {
+              const sound = new Howl({
+                src: ['../../../assets/prokuror.mp3'],
+              });
+              sound.play();
+            }, 3000);
             break;
           case DayStage.CardRevealRequest:
             this.commonService.closeIdleModal();
             this.commonService.closeGameActionModal();
             setTimeout(() => {
               const sound = new Howl({
-                src: ['../../../assets/audio.mp3'],
+                src: ['../../../assets/tututu.mp3'],
               });
               sound.play();
             }, 2 * 1000);
