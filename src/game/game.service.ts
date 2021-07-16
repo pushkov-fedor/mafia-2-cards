@@ -2,14 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { RoomService } from '../room/room.service';
 import { CardType } from './model/card-type.model';
 import * as _ from 'lodash';
-import { Card } from './model/card.model';
 import { Game } from './model/game.model';
 import { RoomStatus } from '../room/model/room-status.model';
+import { GameStatus } from './model/game-status.model';
 
 @Injectable()
 export class GameService {
-  constructor(private roomService: RoomService) {}
   private games: Game[] = [];
+  constructor(private roomService: RoomService) {
+    setInterval(() => {
+      this.games = this.games.filter(
+        (game) => game.gameStatus != GameStatus.FINISHED,
+      );
+    }, 300 * 1000);
+  }
 
   startGame(roomCode: string) {
     const room = this.roomService.getByCode(roomCode);
@@ -75,6 +81,10 @@ export class GameService {
 
   getGameByRoomCode(roomCode: string) {
     return this.games.find((game) => game.roomCode == roomCode);
+  }
+
+  getAll() {
+    return this.games;
   }
 
   private cardType2String(cardType: CardType) {

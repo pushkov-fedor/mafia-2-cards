@@ -174,6 +174,7 @@ export class GameComponent implements OnInit, OnDestroy {
             break;
           case DayStage.PoliceCheck:
             if (this.isPolice) {
+              console.log(this.isPolice);
               setTimeout(() => {
                 this.commonService.openGameActionModal({
                   citizens: this.game.citizens,
@@ -182,7 +183,8 @@ export class GameComponent implements OnInit, OnDestroy {
                   actionType: ActionType.PoliceCheck,
                   myCitizen: this.citizen,
                 });
-              }, 2 * 3000);
+                console.log('Timeout run');
+              }, 3000);
             } else {
               this.commonService.openIdleModal();
             }

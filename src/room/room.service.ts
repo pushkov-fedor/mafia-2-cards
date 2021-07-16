@@ -1,16 +1,22 @@
 import { RoomValidate, RoomValidationConfig } from './room.validate';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Player } from './model/player.model';
-import { RoomStatus } from './model/room-status.model';
 import { Room } from './model/room.model';
 import { CreateRoomResponse } from './response/create-room.response';
 import { JoinRoomResponse } from './response/join-room.response';
 import { addSeconds } from 'date-fns';
+import { RoomStatus } from './model/room-status.model';
 
 @Injectable()
 export class RoomService {
-  constructor(private roomValidate: RoomValidate) {}
   private rooms: Room[] = [];
+  constructor(private roomValidate: RoomValidate) {
+    setInterval(() => {
+      this.rooms = this.rooms.filter(
+        (room) => room.roomStatus != RoomStatus.FINISHED,
+      );
+    }, 300 * 1000);
+  }
 
   create(
     numberOfPlayers: number,
@@ -29,7 +35,6 @@ export class RoomService {
     const room = this.getByCode(code);
     this.roomValidate.validate(room, {
       isExist: true,
-      isActive: true,
       isCancelled: true,
       hasSlotsForPlayer: true,
     });

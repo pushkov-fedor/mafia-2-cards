@@ -101,6 +101,7 @@ export class GameActionComponent {
       .policeCheck(this.roomCode, this.selected.name, String(cardIndex))
       .subscribe((card) => {
         this.policeCheckResult = card;
+        setTimeout(() => this.commonService.openIdleModal(), 2000);
       });
   }
 

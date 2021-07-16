@@ -7,8 +7,10 @@ import { Citizen } from './citizen.model';
 import { Day } from './day.model';
 import { DayStage } from './day-stage.model';
 import { GameStatus } from './game-status.model';
+import { RoomStatus } from '../../room/model/room-status.model';
 
 export class Game {
+  room: Room;
   roomCode: string;
   gameStatus: GameStatus = GameStatus.ACTIVE;
   gameResultMessage = '';
@@ -39,6 +41,7 @@ export class Game {
   }
 
   constructor(room: Room) {
+    this.room = room;
     this.roomCode = room.code;
     const { players, numberOfMafia, numberOfPlayers, numberOfPolices } = room;
     const cards = this.generateCards(
@@ -54,11 +57,17 @@ export class Game {
     if (this.numberOfCivil == this.numberOfMafia) {
       this.gameStatus = GameStatus.FINISHED;
       this.gameResultMessage = 'Победила мафия';
+      setTimeout(() => {
+        this.room.roomStatus = RoomStatus.FINISHED;
+      }, 120 * 1000);
       return;
     }
     if (this.numberOfMafia == 0) {
       this.gameStatus = GameStatus.FINISHED;
       this.gameResultMessage = 'Победили мирные жители';
+      setTimeout(() => {
+        this.room.roomStatus = RoomStatus.FINISHED;
+      }, 120 * 1000);
       return;
     }
     const day = _.last(this.days) as Day;
