@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Room } from '../shared/models/room.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class RoomService {
   player = new BehaviorSubject<Player>(null);
 
   waitRoom(code: string, playerName: string) {
-    return this.http.post<Room>(`${BASE_URL}room/wait`, {
+    return this.http.post<Room>(`${environment.backendUrl}room/wait`, {
       code,
       playerName,
     });
@@ -27,9 +28,8 @@ export class RoomService {
     mafia: number,
     polices: number,
   ) {
-    console.log(BASE_URL);
     return this.http.post<{ room: Room; player: Player }>(
-      `${BASE_URL}room/create`,
+      `${environment.backendUrl}room/create`,
       {
         creatorName,
         players,
@@ -41,7 +41,7 @@ export class RoomService {
 
   joinRoom(code: string, playerName: string) {
     return this.http.post<{ room: Room; player: Player }>(
-      `${BASE_URL}room/join`,
+      `${environment.backendUrl}room/join`,
       {
         code,
         playerName,
@@ -50,15 +50,15 @@ export class RoomService {
   }
 
   startRoom(code: string) {
-    return this.http.post(`${BASE_URL}game/start/${code}`, {});
+    return this.http.post(`${environment.backendUrl}game/start/${code}`, {});
   }
 
   getAll() {
-    return this.http.get(`${BASE_URL}room`);
+    return this.http.get(`${environment.backendUrl}room`);
   }
 
   get(code: string, params?: { [param: string]: string | string[] }) {
-    return this.http.get<Room>(`${BASE_URL}room/${code}`, {
+    return this.http.get<Room>(`${environment.backendUrl}room/${code}`, {
       params,
     });
   }
