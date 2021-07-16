@@ -7,8 +7,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "cd ./frontend && npm install && ng build && cd ../ && nest build",
-    "build:prod": "cd ./frontend && ng build && cd ../ && nest build",
+    "build": "nest build",
+    "build:prod": "cd ./frontend && npm install && ng build && cd ../ && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
