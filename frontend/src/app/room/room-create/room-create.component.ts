@@ -20,7 +20,7 @@ export class RoomCreateComponent {
   ) {}
 
   formGroup = new FormGroup({
-    name: new FormControl('Злая сука', Validators.required),
+    name: new FormControl('', Validators.required),
     numberOfPlayers: new FormControl(6, [
       Validators.required,
       Validators.min(4),

@@ -20,3 +20,6 @@ export const GAME_ACTION_MODAL_MY_CITIZEN = new InjectionToken<Citizen>(
 export const GAME_ACTION_MODAL_RESULT_MESSAGE = new InjectionToken<string>(
   'GAME_ACTION_MODAL_RESULT_MESSAGE',
 );
+export const GAME_ACTION_MODAL_OPEN_IDLE = new InjectionToken<() => void>(
+  'GAME_ACTION_MODAL_OPEN_IDLE',
+);

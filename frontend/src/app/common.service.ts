@@ -12,6 +12,7 @@ import {
   GAME_ACTION_MODAL_CITIZENS,
   GAME_ACTION_MODAL_CLOSE,
   GAME_ACTION_MODAL_MY_CITIZEN,
+  GAME_ACTION_MODAL_OPEN_IDLE,
   GAME_ACTION_MODAL_RESULT_MESSAGE,
   GAME_ACTION_MODAL_ROOM_CODE,
 } from './shared/tokens/game-action.tokens';
@@ -174,6 +175,10 @@ export class CommonService {
         {
           provide: GAME_ACTION_MODAL_RESULT_MESSAGE,
           useValue: config.gameResultMessage,
+        },
+        {
+          provide: GAME_ACTION_MODAL_OPEN_IDLE,
+          useValue: this.openIdleModal.bind(this),
         },
       ],
     });

@@ -10,6 +10,7 @@ import {
   GAME_ACTION_MODAL_CITIZENS,
   GAME_ACTION_MODAL_CLOSE,
   GAME_ACTION_MODAL_MY_CITIZEN,
+  GAME_ACTION_MODAL_OPEN_IDLE,
   GAME_ACTION_MODAL_RESULT_MESSAGE,
   GAME_ACTION_MODAL_ROOM_CODE,
 } from 'src/app/shared/tokens/game-action.tokens';
@@ -28,8 +29,8 @@ export class GameActionComponent {
     @Inject(GAME_ACTION_MODAL_ACTION_TYPE) public actionType: ActionType,
     @Inject(GAME_ACTION_MODAL_MY_CITIZEN) public myCitizen: Citizen,
     @Inject(GAME_ACTION_MODAL_RESULT_MESSAGE) public gameResultMessage: string,
+    @Inject(GAME_ACTION_MODAL_OPEN_IDLE) public openIdleModal: () => void,
     private gameService: GameService,
-    private commonService: CommonService,
     private router: Router,
   ) {}
 
@@ -92,7 +93,7 @@ export class GameActionComponent {
         .killByCivil(this.roomCode, this.selected.name)
         .subscribe(() => void 0);
     }
-    this.commonService.openIdleModal();
+    this.openIdleModal();
     this.closeModal();
   }
 
@@ -101,7 +102,7 @@ export class GameActionComponent {
       .policeCheck(this.roomCode, this.selected.name, String(cardIndex))
       .subscribe((card) => {
         this.policeCheckResult = card;
-        setTimeout(() => this.commonService.openIdleModal(), 2000);
+        setTimeout(() => this.openIdleModal(), 2000);
       });
   }
 
@@ -109,7 +110,7 @@ export class GameActionComponent {
     this.gameService
       .cardReveal(this.roomCode, this.myCitizen.name, this.selectedCardIndex)
       .subscribe(() => void 0);
-    this.commonService.openIdleModal();
+    this.openIdleModal();
     this.closeModal();
   }
   onGameFinished() {
