@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CardsPerPlayer } from './model/cards-per-player.enum';
 import { Game } from './model/game.model';
 import { Player } from './model/player.model';
+import { Vote } from './model/vote.model';
 
 @Injectable()
 export class GameService {
@@ -40,8 +41,19 @@ export class GameService {
     return game;
   }
 
-  startGame(gameId) {
+  startGame(gameId: string) {
     const game = this.getGameById(gameId);
+    game.start();
+  }
+
+  startNight(gameId: string, playerName: string, playerVoteValue: string) {
+    const game = this.getGameById(gameId);
+    game.startNight(new Vote(playerName, playerVoteValue));
+  }
+
+  mafiaKills(gameId: string, playerName: string, playerVoteValue: string) {
+    const game = this.getGameById(gameId);
+    game.mafiaKill(new Vote(playerName, playerVoteValue));
   }
 
   // Вспомогательные методы

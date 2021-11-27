@@ -1,12 +1,19 @@
+import { CardType } from './card-type.enum';
 import { Card } from './card.model';
 import { HealthStatus } from './health-status.enum';
 
 export class Player {
-  private cards: Card[];
-  private status: HealthStatus;
+  cards: Card[];
+  status: HealthStatus;
 
-  constructor(private name: string) {
+  constructor(public name: string) {
     this.cards = [];
     this.status = HealthStatus.Alive;
+  }
+
+  // Публичные методы
+
+  hasAliveCardType(cardType: CardType) {
+    return this.cards.some(card => card.type === cardType && card.status === HealthStatus.Alive)
   }
 }
