@@ -101,6 +101,11 @@ export class Game {
     );
   }
 
+  revealCard(playerName: string, cardIndex: 0 | 1) {
+    const player = this.getPlayerByName(playerName);
+    player.revealCard(cardIndex);
+  }
+
   // Вспомогательные методы
 
   useVoteTemplate(

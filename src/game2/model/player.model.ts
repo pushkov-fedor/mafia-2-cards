@@ -13,6 +13,16 @@ export class Player {
 
   // Публичные методы
 
+  revealCard(cardIndex: 0 | 1) {
+    const card = this.cards[cardIndex];
+    if (card) {
+      card.status = HealthStatus.Dead;
+      if (!this.hasAliveCard()) {
+        this.status = HealthStatus.Dead;
+      }
+    }
+  }
+
   hasAliveCardType(cardType: CardType) {
     return this.cards.some(
       (card) => card.type === cardType && card.status === HealthStatus.Alive,

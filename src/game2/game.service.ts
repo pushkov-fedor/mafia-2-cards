@@ -70,6 +70,11 @@ export class GameService {
     game.civilsKill(new Vote(playerName, playerVoteValue));
   }
 
+  revealCard(gameId: string, playerName: string, cardIndex: 0 | 1) {
+    const game = this.getGameById(gameId);
+    game.revealCard(playerName, cardIndex);
+  }
+
   // Вспомогательные методы
 
   getGameById(gameId: string) {
