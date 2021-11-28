@@ -14,6 +14,16 @@ export class Player {
   // Публичные методы
 
   hasAliveCardType(cardType: CardType) {
-    return this.cards.some(card => card.type === cardType && card.status === HealthStatus.Alive)
+    return this.cards.some(
+      (card) => card.type === cardType && card.status === HealthStatus.Alive,
+    );
+  }
+
+  haveCardTypeAt(cardType: CardType, index: number) {
+    return this.cards[index].type === cardType;
+  }
+
+  hasAliveCard() {
+    return this.cards.some((card) => card.status === HealthStatus.Alive);
   }
 }

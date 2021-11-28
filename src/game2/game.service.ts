@@ -51,9 +51,23 @@ export class GameService {
     game.startNight(new Vote(playerName, playerVoteValue));
   }
 
-  mafiaKills(gameId: string, playerName: string, playerVoteValue: string) {
+  mafiaKill(gameId: string, playerName: string, playerVoteValue: string) {
     const game = this.getGameById(gameId);
     game.mafiaKill(new Vote(playerName, playerVoteValue));
+  }
+
+  policeCheck(
+    gameId: string,
+    playerNameToCheck: string,
+    playerCardToCheck: 0 | 1,
+  ) {
+    const game = this.getGameById(gameId);
+    return game.policeCheck(playerNameToCheck, playerCardToCheck);
+  }
+
+  civilsKill(gameId: string, playerName: string, playerVoteValue: string) {
+    const game = this.getGameById(gameId);
+    game.civilsKill(new Vote(playerName, playerVoteValue));
   }
 
   // Вспомогательные методы

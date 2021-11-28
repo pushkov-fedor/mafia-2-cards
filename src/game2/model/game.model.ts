@@ -52,34 +52,73 @@ export class Game {
   }
 
   startNight(vote: Vote) {
-    if (this.gamePhase !== GamePhase.BeforeNight) return;
-    const hasAlreadyVoted = !!this.hasVote(vote.playerName);
-    if (hasAlreadyVoted) return;
-    this.votingPull.push(vote);
-    const playersVotedNumber = this.votingPull.length;
-    const playersAliveNumber = this.getAlivePlayersNumber();
-    if (playersVotedNumber === playersAliveNumber) {
-      this.gamePhase = GamePhase.MafiaTurn;
-      this.votingPull = [];
-    }
+    this.useVoteTemplate(
+      vote,
+      () => {
+        this.gamePhase = GamePhase.MafiaTurn;
+      },
+      this.getAlivePlayersNumber,
+      GamePhase.BeforeNight,
+    );
   }
 
   mafiaKill(vote: Vote) {
-    if (this.gamePhase !== GamePhase.MafiaTurn) return;
-    const hasAlreadyVoted = !!this.hasVote(vote.playerName);
-    if (hasAlreadyVoted) return;
-    const playersVotedNumber = this.votingPull.length;
-    const mafiaAliveNumber = this.getAliveMafiaNumber();
-    if (playersVotedNumber === mafiaAliveNumber) {
-      const voteResult = this.getVoteResultValue();
-      const player = this.players.find(
-        (player) => player.name === voteResult.value,
-      );
-      player.status = HealthStatus.Injured;
-    }
+    this.useVoteTemplate(
+      vote,
+      () => {
+        this.gamePhase = GamePhase.PoliceTurn;
+        const voteResultValue = this.getVoteResultValue();
+        const player = this.getPlayerByName(voteResultValue);
+        player.status = HealthStatus.Injured;
+      },
+      this.getAliveMafiaNumber,
+      GamePhase.MafiaTurn,
+    );
+  }
+
+  policeCheck(playerNameToCheck: string, playerCardToCheck: 0 | 1) {
+    if (this.gamePhase !== GamePhase.CivilsTurn) return;
+    this.gamePhase = GamePhase.CivilsTurn;
+    const player = this.getPlayerByName(playerNameToCheck);
+    return {
+      playerName: playerNameToCheck,
+      playerCardIndex: playerCardToCheck,
+      result: player.haveCardTypeAt(CardType.Mafia, playerCardToCheck),
+    };
+  }
+
+  civilsKill(vote: Vote) {
+    this.useVoteTemplate(
+      vote,
+      () => {
+        this.gamePhase = GamePhase.BeforeNight;
+        const voteResultValue = this.getVoteResultValue();
+        const player = this.getPlayerByName(voteResultValue);
+        player.status = HealthStatus.Injured;
+      },
+      this.getAliveCivilsNumber,
+      GamePhase.CivilsTurn,
+    );
   }
 
   // Вспомогательные методы
+
+  useVoteTemplate(
+    vote: Vote,
+    votingResultFun: () => void,
+    getAliveNumberFun: () => number,
+    gamePhase: GamePhase,
+  ) {
+    if (this.gamePhase !== gamePhase) return;
+    const hasAlreadyVoted = !!this.hasVote(vote.playerName);
+    if (hasAlreadyVoted) return;
+    const playersVotedNumber = this.votingPull.length;
+    const mafiaAliveNumber = getAliveNumberFun();
+    if (playersVotedNumber === mafiaAliveNumber) {
+      votingResultFun();
+      this.votingPull = [];
+    }
+  }
 
   private generateCards() {
     let cards = [];
@@ -128,6 +167,10 @@ export class Game {
     ).length;
   }
 
+  private getAliveCivilsNumber() {
+    return this.players.filter((player) => player.hasAliveCard()).length;
+  }
+
   private getVoteResultValue() {
     return this.votingPull
       .sort(
@@ -135,6 +178,10 @@ export class Game {
           this.votingPull.filter((v) => v === a).length -
           this.votingPull.filter((v) => v === b).length,
       )
-      .pop();
+      .pop().value;
+  }
+
+  private getPlayerByName(playerName: string) {
+    return this.players.find((player) => player.name === playerName);
   }
 }
