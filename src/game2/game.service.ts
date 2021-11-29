@@ -6,16 +6,16 @@ import { Vote } from './model/vote.model';
 
 @Injectable()
 export class GameService {
-  private games: Game[];
+  private games: Game[] = [];
 
-  //   Основные методы
+  // Основные методы
 
   createGame(
     cardsPerPlayer: CardsPerPlayer,
-    creatorName,
-    mafiaNumber,
-    policeNumber,
-    playersNumber,
+    creatorName: string,
+    mafiaNumber: number,
+    policeNumber: number,
+    playersNumber: number,
   ) {
     const game = new Game(
       cardsPerPlayer,
@@ -46,9 +46,9 @@ export class GameService {
     game.start();
   }
 
-  startNight(gameId: string, playerName: string, playerVoteValue: string) {
+  startNight(gameId: string, playerName: string) {
     const game = this.getGameById(gameId);
-    game.startNight(new Vote(playerName, playerVoteValue));
+    game.startNight(new Vote(playerName));
   }
 
   mafiaKill(gameId: string, playerName: string, playerVoteValue: string) {

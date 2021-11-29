@@ -1,4 +1,3 @@
-import cryptoRandomString from 'crypto-random-string';
 import { CardType } from './card-type.enum';
 import { Card } from './card.model';
 import { CardsPerPlayer } from './cards-per-player.enum';
@@ -9,6 +8,7 @@ import { Player } from './player.model';
 import { Vote } from './vote.model';
 import * as _ from 'lodash';
 import { HealthStatus } from './health-status.enum';
+import cryptoRandomString = require('crypto-random-string');
 
 export class Game {
   id: string;
@@ -36,7 +36,7 @@ export class Game {
   // Публичные методы
 
   addPlayer(player: Player) {
-    if (this.players.length + 1 < this.playersNumber) {
+    if (this.players.length < this.playersNumber) {
       this.players.push(player);
     }
   }
@@ -57,7 +57,7 @@ export class Game {
       () => {
         this.gamePhase = GamePhase.MafiaTurn;
       },
-      this.getAlivePlayersNumber,
+      this.getAlivePlayersNumber.bind(this),
       GamePhase.BeforeNight,
     );
   }
@@ -71,14 +71,14 @@ export class Game {
         const player = this.getPlayerByName(voteResultValue);
         player.status = HealthStatus.Injured;
       },
-      this.getAliveMafiaNumber,
+      this.getAliveMafiaNumber.bind(this),
       GamePhase.MafiaTurn,
     );
   }
 
   policeCheck(playerNameToCheck: string, playerCardToCheck: 0 | 1) {
-    if (this.gamePhase !== GamePhase.CivilsTurn) return;
-    this.gamePhase = GamePhase.CivilsTurn;
+    if (this.gamePhase !== GamePhase.PoliceTurn) return;
+    this.gamePhase = GamePhase.CardRevealAfterNight;
     const player = this.getPlayerByName(playerNameToCheck);
     return {
       playerName: playerNameToCheck,
@@ -91,19 +91,33 @@ export class Game {
     this.useVoteTemplate(
       vote,
       () => {
-        this.gamePhase = GamePhase.BeforeNight;
+        this.gamePhase = GamePhase.CardRevealAfterCourt;
         const voteResultValue = this.getVoteResultValue();
         const player = this.getPlayerByName(voteResultValue);
         player.status = HealthStatus.Injured;
       },
-      this.getAliveCivilsNumber,
+      this.getAliveCivilsNumber.bind(this),
       GamePhase.CivilsTurn,
     );
   }
 
   revealCard(playerName: string, cardIndex: 0 | 1) {
+    if (
+      !(
+        this.gamePhase == GamePhase.CardRevealAfterNight ||
+        this.gamePhase == GamePhase.CardRevealAfterCourt
+      )
+    )
+      return;
     const player = this.getPlayerByName(playerName);
     player.revealCard(cardIndex);
+    switch (this.gamePhase) {
+      case GamePhase.CardRevealAfterNight:
+        this.gamePhase = GamePhase.CivilsTurn;
+        return;
+      case GamePhase.CardRevealAfterCourt:
+        this.gamePhase = GamePhase.BeforeNight;
+    }
   }
 
   // Вспомогательные методы
@@ -117,6 +131,7 @@ export class Game {
     if (this.gamePhase !== gamePhase) return;
     const hasAlreadyVoted = !!this.hasVote(vote.playerName);
     if (hasAlreadyVoted) return;
+    this.votingPull.push(vote);
     const playersVotedNumber = this.votingPull.length;
     const mafiaAliveNumber = getAliveNumberFun();
     if (playersVotedNumber === mafiaAliveNumber) {
@@ -135,7 +150,12 @@ export class Game {
     }
     for (
       let i = 0;
-      i < this.playersNumber - this.mafiaNumber - this.policeNumber;
+      i <
+      (this.cardsPerPlayer === CardsPerPlayer.One
+        ? this.playersNumber
+        : this.playersNumber * 2) -
+        this.mafiaNumber -
+        this.policeNumber;
       i++
     ) {
       cards.push(new Card(CardType.Civil));

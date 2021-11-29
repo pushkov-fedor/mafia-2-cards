@@ -19,6 +19,8 @@ export class Player {
       card.status = HealthStatus.Dead;
       if (!this.hasAliveCard()) {
         this.status = HealthStatus.Dead;
+      } else {
+        this.status = HealthStatus.Alive;
       }
     }
   }
