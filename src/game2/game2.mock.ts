@@ -72,7 +72,7 @@ export class Game2Mock {
 
   static civilsKill(gameService: GameService, gameId: string) {
     const game = gameService.getGameById(gameId);
-    game.players.forEach((player, index) => {
+    game.players.forEach((player) => {
       const playerToJudge = _.shuffle(game.players)[0] as Player;
       gameService.civilsKill(gameId, player.name, playerToJudge.name);
     });
