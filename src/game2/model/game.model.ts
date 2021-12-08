@@ -26,7 +26,7 @@ export class Game {
   ) {
     this.id = cryptoRandomString({
       length: 6,
-      type: 'distinguishable',
+      type: 'base64',
     });
     this.gameStatus = GameStatus.Created;
     this.players = [];
