@@ -161,7 +161,7 @@ export class Game {
       cards.push(new Card(CardType.Civil));
     }
     cards = _.shuffle(cards);
-    if ((this.cardsPerPlayer = CardsPerPlayer.Two)) {
+    if (this.cardsPerPlayer === CardsPerPlayer.Two) {
       let cardChunks = _.chunk(cards, 2);
       while (
         cardChunks.some(

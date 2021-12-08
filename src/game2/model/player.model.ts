@@ -8,7 +8,7 @@ export class Player {
   cards: Card[];
   status: HealthStatus;
 
-  constructor(public name: string) {
+  constructor(public name: string, public isGameCreator = false) {
     this.id = cryptoRandomString({ length: 8 });
     this.cards = [];
     this.status = HealthStatus.Alive;

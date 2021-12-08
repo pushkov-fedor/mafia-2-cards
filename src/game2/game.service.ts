@@ -23,8 +23,15 @@ export class GameService {
       policeNumber,
       playersNumber,
     );
-    const creator = new Player(creatorName);
+    const creator = new Player(creatorName, true);
     game.addPlayer(creator);
+    // mock players
+    game.addPlayer(new Player('1'));
+    game.addPlayer(new Player('2'));
+    game.addPlayer(new Player('3'));
+    game.addPlayer(new Player('4'));
+    game.addPlayer(new Player('5'));
+    // mock players end
     this.games.push(game);
     return game;
   }
