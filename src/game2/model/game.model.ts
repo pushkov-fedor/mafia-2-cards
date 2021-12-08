@@ -209,4 +209,8 @@ export class Game {
   private getPlayerByName(playerName: string) {
     return this.players.find((player) => player.name === playerName);
   }
+
+  public getPlayerIdByName(playerName: string) {
+    return this.getPlayerByName(playerName).id;
+  }
 }

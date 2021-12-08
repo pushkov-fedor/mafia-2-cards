@@ -57,16 +57,21 @@ export class GameController {
       policeNumber,
       playersNumber,
     );
-    const player = game.players.find((player) => player.name === creatorName);
+    const playerId = game.getPlayerIdByName(creatorName);
     return {
       game,
-      playerId: player.id,
+      playerId,
     };
   }
 
   @Post('join')
   join(@Body() { gameId, playerName }: { gameId: string; playerName: string }) {
-    return this.gameService.joinGame(gameId, playerName);
+    const game = this.gameService.joinGame(gameId, playerName);
+    const playerId = game.getPlayerIdByName(playerName);
+    return {
+      game,
+      playerId,
+    };
   }
 
   @Post('start')
