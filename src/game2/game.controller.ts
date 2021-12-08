@@ -50,13 +50,18 @@ export class GameController {
       playersNumber: number;
     },
   ) {
-    return this.gameService.createGame(
+    const game = this.gameService.createGame(
       cardsPerPlayer,
       creatorName,
       mafiaNumber,
       policeNumber,
       playersNumber,
     );
+    const player = game.players.find((player) => player.name === creatorName);
+    return {
+      game,
+      playerId: player.id,
+    };
   }
 
   @Post('join')

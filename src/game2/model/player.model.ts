@@ -1,12 +1,15 @@
 import { CardType } from './card-type.enum';
 import { Card } from './card.model';
 import { HealthStatus } from './health-status.enum';
+import cryptoRandomString = require('crypto-random-string');
 
 export class Player {
+  id: string;
   cards: Card[];
   status: HealthStatus;
 
   constructor(public name: string) {
+    this.id = cryptoRandomString({ length: 8 });
     this.cards = [];
     this.status = HealthStatus.Alive;
   }
