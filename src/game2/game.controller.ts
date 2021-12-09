@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { GameService } from './game.service';
 import { Game2Mock } from './game2.mock';
-import { CardsPerPlayer } from './model/cards-per-player.enum';
 
 @Controller('game2')
 export class GameController {
@@ -37,25 +36,22 @@ export class GameController {
   create(
     @Body()
     {
-      cardsPerPlayer,
       creatorName,
+      civilsNumber,
       mafiaNumber,
-      policeNumber,
-      playersNumber,
+      hasPolice,
     }: {
-      cardsPerPlayer: CardsPerPlayer;
       creatorName: string;
+      civilsNumber: number;
       mafiaNumber: number;
-      policeNumber: number;
-      playersNumber: number;
+      hasPolice: boolean;
     },
   ) {
     const game = this.gameService.createGame(
-      cardsPerPlayer,
       creatorName,
+      civilsNumber,
       mafiaNumber,
-      policeNumber,
-      playersNumber,
+      hasPolice,
     );
     const playerId = game.getPlayerIdByName(creatorName);
     return {

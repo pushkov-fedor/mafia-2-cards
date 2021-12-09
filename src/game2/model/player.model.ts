@@ -5,19 +5,18 @@ import cryptoRandomString = require('crypto-random-string');
 
 export class Player {
   id: string;
-  cards: Card[];
+  card: Card;
   status: HealthStatus;
 
-  constructor(public name: string, public isGameCreator = false) {
+  constructor(public name: string, public isHost = false) {
     this.id = cryptoRandomString({ length: 8 });
-    this.cards = [];
     this.status = HealthStatus.Alive;
   }
 
   // Публичные методы
 
   revealCard(cardIndex: 0 | 1) {
-    const card = this.cards[cardIndex];
+    const card = this.card[cardIndex];
     if (card) {
       card.status = HealthStatus.Dead;
       if (!this.hasAliveCard()) {
@@ -26,19 +25,20 @@ export class Player {
         this.status = HealthStatus.Alive;
       }
     }
+    return card;
   }
 
   hasAliveCardType(cardType: CardType) {
-    return this.cards.some(
-      (card) => card.type === cardType && card.status === HealthStatus.Alive,
+    return (
+      this.card.type === cardType && this.card.status === HealthStatus.Alive
     );
   }
 
-  haveCardTypeAt(cardType: CardType, index: number) {
-    return this.cards[index].type === cardType;
+  hasAliveCard() {
+    return this.card.status === HealthStatus.Alive;
   }
 
-  hasAliveCard() {
-    return this.cards.some((card) => card.status === HealthStatus.Alive);
+  hasCardType(cardType: CardType) {
+    return this.card.type === cardType;
   }
 }

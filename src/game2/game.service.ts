@@ -1,5 +1,4 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CardsPerPlayer } from './model/cards-per-player.enum';
 import { Game } from './model/game.model';
 import { Player } from './model/player.model';
 import { Vote } from './model/vote.model';
@@ -11,19 +10,13 @@ export class GameService {
   // Основные методы
 
   createGame(
-    cardsPerPlayer: CardsPerPlayer,
-    creatorName: string,
+    hostName: string,
+    civilsNumber: number,
     mafiaNumber: number,
-    policeNumber: number,
-    playersNumber: number,
+    hasPolice: boolean,
   ) {
-    const game = new Game(
-      cardsPerPlayer,
-      mafiaNumber,
-      policeNumber,
-      playersNumber,
-    );
-    const creator = new Player(creatorName, true);
+    const game = new Game(mafiaNumber, civilsNumber, hasPolice);
+    const creator = new Player(hostName, true);
     game.addPlayer(creator);
     // mock players
     game.addPlayer(new Player('1'));
@@ -38,6 +31,9 @@ export class GameService {
 
   joinGame(gameId: string, playerName: string) {
     const game = this.getGameById(gameId);
+    if (game.hasPlayer(playerName)) {
+      return game;
+    }
     const player = new Player(playerName);
     game.addPlayer(player);
     return game;
@@ -56,6 +52,13 @@ export class GameService {
   startNight(gameId: string, playerName: string) {
     const game = this.getGameById(gameId);
     game.startNight(new Vote(playerName));
+    // mock players voting
+    game.startNight(new Vote('1'));
+    game.startNight(new Vote('2'));
+    game.startNight(new Vote('3'));
+    game.startNight(new Vote('4'));
+    game.startNight(new Vote('5'));
+    // mock end
   }
 
   mafiaKill(gameId: string, playerName: string, playerVoteValue: string) {
