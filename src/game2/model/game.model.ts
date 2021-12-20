@@ -76,7 +76,8 @@ export class Game {
         const player = this.getPlayerById(voteResultValue);
         player.status = HealthStatus.Dead;
         const action = _.last(this.actions) as GameRoundAction;
-        action.killedByMafia = player;
+        action.killedPlayer = player;
+        action.message = 'Был(а) убит(а) ночью мафией';
       },
       this.getAliveMafiaNumber.bind(this),
       GamePhase.MafiaTurn,
@@ -103,7 +104,8 @@ export class Game {
         const player = this.getPlayerByName(voteResultValue);
         player.status = HealthStatus.Dead;
         const action = _.last(this.actions) as GameRoundAction;
-        action.judgedByCivils = player;
+        action.killedPlayer = player;
+        action.message = 'Был(а) убит(а) днем мирными жителями';
       },
       this.getAliveCivilsNumber.bind(this),
       GamePhase.CivilsTurn,

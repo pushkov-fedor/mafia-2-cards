@@ -1,13 +1,10 @@
 import { Player } from './player.model';
 import cryptoRandomString = require('crypto-random-string');
-import { Card } from './card.model';
 
 export class GameRoundAction {
   id: string;
-  killedByMafia: Player;
-  killedByMafiaCard: Card;
-  judgedByCivils: Player;
-  judgedByCivilsCard: Card;
+  killedPlayer: Player;
+  message: string;
 
   constructor() {
     this.id = cryptoRandomString({
