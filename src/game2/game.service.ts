@@ -15,7 +15,7 @@ export class GameService {
     mafiaNumber: number,
     hasPolice: boolean,
   ) {
-    const game = new Game(mafiaNumber, civilsNumber, hasPolice);
+    const game = new Game(civilsNumber, mafiaNumber, hasPolice);
     const creator = new Player(hostName, true);
     game.addPlayer(creator);
     // mock players
@@ -78,11 +78,6 @@ export class GameService {
   civilsKill(gameId: string, playerName: string, playerVoteValue: string) {
     const game = this.getGameById(gameId);
     game.civilsKill(new Vote(playerName, playerVoteValue));
-  }
-
-  revealCard(gameId: string, playerName: string, cardIndex: 0 | 1) {
-    const game = this.getGameById(gameId);
-    game.revealCard(playerName, cardIndex);
   }
 
   // Вспомогательные методы

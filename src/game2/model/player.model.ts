@@ -15,30 +15,11 @@ export class Player {
 
   // Публичные методы
 
-  revealCard(cardIndex: 0 | 1) {
-    const card = this.card[cardIndex];
-    if (card) {
-      card.status = HealthStatus.Dead;
-      if (!this.hasAliveCard()) {
-        this.status = HealthStatus.Dead;
-      } else {
-        this.status = HealthStatus.Alive;
-      }
-    }
-    return card;
-  }
-
-  hasAliveCardType(cardType: CardType) {
-    return (
-      this.card.type === cardType && this.card.status === HealthStatus.Alive
-    );
-  }
-
-  hasAliveCard() {
-    return this.card.status === HealthStatus.Alive;
-  }
-
   hasCardType(cardType: CardType) {
     return this.card.type === cardType;
+  }
+
+  isAliveCardType(cardType: CardType) {
+    return this.status === HealthStatus.Alive && this.card.type === cardType;
   }
 }

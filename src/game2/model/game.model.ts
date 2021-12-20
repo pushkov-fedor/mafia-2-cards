@@ -73,8 +73,8 @@ export class Game {
           this.gamePhase = GamePhase.CivilsTurn;
         }
         const voteResultValue = this.getVoteResultValue();
-        const player = this.getPlayerByName(voteResultValue);
-        player.status = HealthStatus.Injured;
+        const player = this.getPlayerById(voteResultValue);
+        player.status = HealthStatus.Dead;
         const action = _.last(this.actions) as GameRoundAction;
         action.killedByMafia = player;
       },
@@ -101,35 +101,13 @@ export class Game {
         this.gamePhase = GamePhase.BeforeNight;
         const voteResultValue = this.getVoteResultValue();
         const player = this.getPlayerByName(voteResultValue);
-        player.status = HealthStatus.Injured;
+        player.status = HealthStatus.Dead;
         const action = _.last(this.actions) as GameRoundAction;
         action.judgedByCivils = player;
       },
       this.getAliveCivilsNumber.bind(this),
       GamePhase.CivilsTurn,
     );
-  }
-
-  revealCard(playerName: string, cardIndex: 0 | 1) {
-    if (
-      !(
-        this.gamePhase == GamePhase.CardRevealAfterNight ||
-        this.gamePhase == GamePhase.CardRevealAfterCourt
-      )
-    )
-      return;
-    const player = this.getPlayerByName(playerName);
-    const revealedCard = player.revealCard(cardIndex);
-    const action = _.last(this.actions) as GameRoundAction;
-    switch (this.gamePhase) {
-      case GamePhase.CardRevealAfterNight:
-        this.gamePhase = GamePhase.CivilsTurn;
-        action.killedByMafiaCard = revealedCard;
-        return;
-      case GamePhase.CardRevealAfterCourt:
-        this.gamePhase = GamePhase.BeforeNight;
-        action.judgedByCivilsCard = revealedCard;
-    }
   }
 
   // Вспомогательные методы
@@ -182,12 +160,13 @@ export class Game {
 
   private getAliveMafiaNumber() {
     return this.players.filter((player) =>
-      player.hasAliveCardType(CardType.Mafia),
+      player.isAliveCardType(CardType.Mafia),
     ).length;
   }
 
   private getAliveCivilsNumber() {
-    return this.players.filter((player) => player.hasAliveCard()).length;
+    return this.players.filter((player) => player.status === HealthStatus.Alive)
+      .length;
   }
 
   private getVoteResultValue() {
@@ -204,6 +183,10 @@ export class Game {
     return this.players.find((player) => player.name === playerName);
   }
 
+  private getPlayerById(playerId: string) {
+    return this.players.find((player) => player.id === playerId);
+  }
+
   public getPlayerIdByName(playerName: string) {
     return this.getPlayerByName(playerName).id;
   }
@@ -214,7 +197,7 @@ export class Game {
 
   private hasAlivePolice() {
     return this.players.some((player) =>
-      player.hasAliveCardType(CardType.Police),
+      player.isAliveCardType(CardType.Police),
     );
   }
 }

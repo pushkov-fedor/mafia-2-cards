@@ -29,7 +29,9 @@ export class GameController {
 
   @Get('get/:id')
   get(@Param('id') id: string) {
-    return this.gameService.getGameById(id);
+    const game = this.gameService.getGameById(id);
+    console.log(game);
+    return game;
   }
 
   @Post('create')
@@ -53,6 +55,7 @@ export class GameController {
       mafiaNumber,
       hasPolice,
     );
+    console.log(mafiaNumber);
     const playerId = game.getPlayerIdByName(creatorName);
     return {
       game,
@@ -116,22 +119,6 @@ export class GameController {
       playerNameToCheck,
       playerCardToCheck,
     );
-  }
-
-  @Post('revealCard')
-  revealCard(
-    @Body()
-    {
-      gameId,
-      playerName,
-      cardIndex,
-    }: {
-      gameId: string;
-      playerName: string;
-      cardIndex: 0 | 1;
-    },
-  ) {
-    return this.gameService.revealCard(gameId, playerName, cardIndex);
   }
 
   @Post('civilsKill')
