@@ -1,8 +1,7 @@
 export enum GamePhase {
   MafiaTurn,
   PoliceTurn,
-  CardRevealAfterNight,
+  Discussion,
   CivilsTurn,
-  CardRevealAfterCourt,
   BeforeNight,
 }

@@ -71,6 +71,11 @@ export class GameService {
     game.endNight();
   }
 
+  startTrial(gameId: string, playerName: string) {
+    const game = this.getGameById(gameId);
+    game.startTrial(new Vote(playerName));
+  }
+
   civilsKill(gameId: string, playerName: string, playerVoteValue: string) {
     const game = this.getGameById(gameId);
     game.civilsKill(new Vote(playerName, playerVoteValue));

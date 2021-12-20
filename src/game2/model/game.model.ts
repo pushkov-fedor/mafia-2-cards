@@ -69,7 +69,7 @@ export class Game {
         if (this.hasAlivePolice()) {
           this.gamePhase = GamePhase.PoliceTurn;
         } else {
-          this.gamePhase = GamePhase.CivilsTurn;
+          this.gamePhase = GamePhase.Discussion;
         }
         const voteResultValue = this.getVoteResultValue();
         const player = this.getPlayerById(voteResultValue);
@@ -89,8 +89,19 @@ export class Game {
       if (player.status === HealthStatus.Injured) {
         player.status = HealthStatus.Dead;
       }
-      this.gamePhase = GamePhase.CivilsTurn;
+      this.gamePhase = GamePhase.Discussion;
     });
+  }
+
+  startTrial(vote: Vote) {
+    this.useVoteTemplate(
+      vote,
+      () => {
+        this.gamePhase = GamePhase.CivilsTurn;
+      },
+      this.getAliveCivilsNumber.bind(this),
+      GamePhase.Discussion,
+    );
   }
 
   civilsKill(vote: Vote) {

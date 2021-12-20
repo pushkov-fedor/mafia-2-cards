@@ -109,6 +109,14 @@ export class GameController {
     return this.gameService.endNight(gameId);
   }
 
+  @Post('startTrial')
+  startTrial(
+    @Body()
+    { gameId, playerName }: { gameId: string; playerName: string },
+  ) {
+    this.gameService.startTrial(gameId, playerName);
+  }
+
   @Post('civilsKill')
   civilsKill(
     @Body()
