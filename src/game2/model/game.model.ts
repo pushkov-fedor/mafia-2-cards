@@ -56,7 +56,6 @@ export class Game {
       vote,
       () => {
         this.gamePhase = GamePhase.MafiaTurn;
-        this.actions.push(new GameRoundAction());
       },
       this.getAlivePlayersNumber.bind(this),
       GamePhase.BeforeNight,
@@ -74,25 +73,24 @@ export class Game {
         }
         const voteResultValue = this.getVoteResultValue();
         const player = this.getPlayerById(voteResultValue);
-        player.status = HealthStatus.Dead;
-        const action = _.last(this.actions) as GameRoundAction;
+        player.status = HealthStatus.Injured;
+        const action = new GameRoundAction();
         action.killedPlayer = player;
         action.message = 'Был(а) убит(а) ночью мафией';
+        this.actions.push(action);
       },
       this.getAliveMafiaNumber.bind(this),
       GamePhase.MafiaTurn,
     );
   }
 
-  policeCheck(playerNameToCheck: string, playerCardToCheck: 0 | 1) {
-    if (this.gamePhase !== GamePhase.PoliceTurn) return;
-    this.gamePhase = GamePhase.CivilsTurn;
-    const player = this.getPlayerByName(playerNameToCheck);
-    return {
-      playerName: playerNameToCheck,
-      playerCardIndex: playerCardToCheck,
-      result: player.hasCardType(CardType.Mafia),
-    };
+  endNight() {
+    this.players.forEach((player) => {
+      if (player.status === HealthStatus.Injured) {
+        player.status = HealthStatus.Dead;
+      }
+      this.gamePhase = GamePhase.CivilsTurn;
+    });
   }
 
   civilsKill(vote: Vote) {
@@ -103,9 +101,10 @@ export class Game {
         const voteResultValue = this.getVoteResultValue();
         const player = this.getPlayerByName(voteResultValue);
         player.status = HealthStatus.Dead;
-        const action = _.last(this.actions) as GameRoundAction;
+        const action = new GameRoundAction();
         action.killedPlayer = player;
-        action.message = 'Был(а) убит(а) днем мирными жителями';
+        action.message = 'Был(а) убит(а) ночью мирными жителями';
+        this.actions.push(action);
       },
       this.getAliveCivilsNumber.bind(this),
       GamePhase.CivilsTurn,

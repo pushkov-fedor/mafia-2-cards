@@ -101,24 +101,12 @@ export class GameController {
     return this.gameService.mafiaKill(gameId, playerName, playerVoteValue);
   }
 
-  @Post('policeCheck')
+  @Post('endNight')
   policeCheck(
     @Body()
-    {
-      gameId,
-      playerNameToCheck,
-      playerCardToCheck,
-    }: {
-      gameId: string;
-      playerNameToCheck: string;
-      playerCardToCheck: 0 | 1;
-    },
+    { gameId }: { gameId: string },
   ) {
-    return this.gameService.policeCheck(
-      gameId,
-      playerNameToCheck,
-      playerCardToCheck,
-    );
+    return this.gameService.endNight(gameId);
   }
 
   @Post('civilsKill')

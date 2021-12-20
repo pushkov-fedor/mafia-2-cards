@@ -66,13 +66,9 @@ export class GameService {
     game.mafiaKill(new Vote(playerName, playerVoteValue));
   }
 
-  policeCheck(
-    gameId: string,
-    playerNameToCheck: string,
-    playerCardToCheck: 0 | 1,
-  ) {
+  endNight(gameId: string) {
     const game = this.getGameById(gameId);
-    return game.policeCheck(playerNameToCheck, playerCardToCheck);
+    game.endNight();
   }
 
   civilsKill(gameId: string, playerName: string, playerVoteValue: string) {
