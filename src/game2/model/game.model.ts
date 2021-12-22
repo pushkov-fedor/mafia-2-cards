@@ -135,8 +135,8 @@ export class Game {
     if (hasAlreadyVoted) return;
     this.votingPull.push(vote);
     const playersVotedNumber = this.votingPull.length;
-    const mafiaAliveNumber = getAliveNumberFun();
-    if (playersVotedNumber === mafiaAliveNumber) {
+    const playersAliveNumber = getAliveNumberFun();
+    if (playersVotedNumber === playersAliveNumber) {
       votingResultFun();
       this.votingPull = [];
     }

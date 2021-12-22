@@ -78,9 +78,9 @@ export class GameController {
 
   @Post('startNight')
   startNight(
-    @Body() { gameId, playerName }: { gameId: string; playerName: string },
+    @Body() { gameId, playerId }: { gameId: string; playerId: string },
   ) {
-    return this.gameService.startNight(gameId, playerName);
+    return this.gameService.startNight(gameId, playerId);
   }
 
   @Post('mafiaKill')
@@ -88,19 +88,19 @@ export class GameController {
     @Body()
     {
       gameId,
-      playerName,
+      playerId,
       playerVoteValue,
     }: {
       gameId: string;
-      playerName: string;
+      playerId: string;
       playerVoteValue: string;
     },
   ) {
-    return this.gameService.mafiaKill(gameId, playerName, playerVoteValue);
+    return this.gameService.mafiaKill(gameId, playerId, playerVoteValue);
   }
 
   @Post('endNight')
-  policeCheck(
+  endNight(
     @Body()
     { gameId }: { gameId: string },
   ) {
@@ -110,9 +110,9 @@ export class GameController {
   @Post('startTrial')
   startTrial(
     @Body()
-    { gameId, playerName }: { gameId: string; playerName: string },
+    { gameId, playerId }: { gameId: string; playerId: string },
   ) {
-    this.gameService.startTrial(gameId, playerName);
+    this.gameService.startTrial(gameId, playerId);
   }
 
   @Post('civilsKill')
@@ -120,14 +120,14 @@ export class GameController {
     @Body()
     {
       gameId,
-      playerName,
+      playerId,
       playerVoteValue,
     }: {
       gameId: string;
-      playerName: string;
+      playerId: string;
       playerVoteValue: string;
     },
   ) {
-    return this.gameService.civilsKill(gameId, playerName, playerVoteValue);
+    return this.gameService.civilsKill(gameId, playerId, playerVoteValue);
   }
 }

@@ -49,9 +49,9 @@ export class GameService {
     game.start();
   }
 
-  startNight(gameId: string, playerName: string) {
+  startNight(gameId: string, playerId: string) {
     const game = this.getGameById(gameId);
-    game.startNight(new Vote(playerName));
+    game.startNight(new Vote(playerId));
     // mock players voting
     game.startNight(new Vote('1'));
     game.startNight(new Vote('2'));
@@ -61,9 +61,9 @@ export class GameService {
     // mock end
   }
 
-  mafiaKill(gameId: string, playerName: string, playerVoteValue: string) {
+  mafiaKill(gameId: string, playerId: string, playerVoteValue: string) {
     const game = this.getGameById(gameId);
-    game.mafiaKill(new Vote(playerName, playerVoteValue));
+    game.mafiaKill(new Vote(playerId, playerVoteValue));
   }
 
   endNight(gameId: string) {
@@ -71,9 +71,9 @@ export class GameService {
     game.endNight();
   }
 
-  startTrial(gameId: string, playerName: string) {
+  startTrial(gameId: string, playerId: string) {
     const game = this.getGameById(gameId);
-    game.startTrial(new Vote(playerName));
+    game.startTrial(new Vote(playerId));
     // mock
     game.startTrial(new Vote('1'));
     game.startTrial(new Vote('2'));
@@ -82,9 +82,9 @@ export class GameService {
     game.startTrial(new Vote('5'));
   }
 
-  civilsKill(gameId: string, playerName: string, playerVoteValue: string) {
+  civilsKill(gameId: string, playerId: string, playerVoteValue: string) {
     const game = this.getGameById(gameId);
-    game.civilsKill(new Vote(playerName, playerVoteValue));
+    game.civilsKill(new Vote(playerId, playerVoteValue));
   }
 
   // Вспомогательные методы
