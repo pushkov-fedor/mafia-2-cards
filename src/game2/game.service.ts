@@ -74,6 +74,12 @@ export class GameService {
   startTrial(gameId: string, playerName: string) {
     const game = this.getGameById(gameId);
     game.startTrial(new Vote(playerName));
+    // mock
+    game.startTrial(new Vote('1'));
+    game.startTrial(new Vote('2'));
+    game.startTrial(new Vote('1'));
+    game.startTrial(new Vote('4'));
+    game.startTrial(new Vote('5'));
   }
 
   civilsKill(gameId: string, playerName: string, playerVoteValue: string) {

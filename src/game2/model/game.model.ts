@@ -110,7 +110,7 @@ export class Game {
       () => {
         this.gamePhase = GamePhase.BeforeNight;
         const voteResultValue = this.getVoteResultValue();
-        const player = this.getPlayerByName(voteResultValue);
+        const player = this.getPlayerById(voteResultValue);
         player.status = HealthStatus.Dead;
         const action = new GameRoundAction();
         action.killedPlayer = player;
