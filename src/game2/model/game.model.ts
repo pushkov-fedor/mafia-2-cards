@@ -19,6 +19,7 @@ export class Game {
   gamePhase: GamePhase;
   votingPull: Vote[];
   actions: GameRoundAction[];
+  result: string;
 
   constructor(
     public civilsNumber: number,
@@ -78,6 +79,7 @@ export class Game {
         action.killedPlayer = player;
         action.message = 'Был(а) убит(а) ночью мафией';
         this.actions.push(action);
+        this.gameFinishedCheck();
       },
       this.getAliveMafiaNumber.bind(this),
       GamePhase.MafiaTurn,
@@ -99,7 +101,7 @@ export class Game {
       () => {
         this.gamePhase = GamePhase.CivilsTurn;
       },
-      this.getAliveCivilsNumber.bind(this),
+      this.getAlivePlayersNumber.bind(this),
       GamePhase.Discussion,
     );
   }
@@ -116,8 +118,9 @@ export class Game {
         action.killedPlayer = player;
         action.message = 'Был(а) убит(а) ночью мирными жителями';
         this.actions.push(action);
+        this.gameFinishedCheck();
       },
-      this.getAliveCivilsNumber.bind(this),
+      this.getAlivePlayersNumber.bind(this),
       GamePhase.CivilsTurn,
     );
   }
@@ -177,8 +180,11 @@ export class Game {
   }
 
   private getAliveCivilsNumber() {
-    return this.players.filter((player) => player.status === HealthStatus.Alive)
-      .length;
+    return this.players.filter(
+      (player) =>
+        player.isAliveCardType(CardType.Civil) ||
+        player.isAliveCardType(CardType.Police),
+    ).length;
   }
 
   private getVoteResultValue() {
@@ -211,5 +217,25 @@ export class Game {
     return this.players.some((player) =>
       player.isAliveCardType(CardType.Police),
     );
+  }
+
+  private isMafiaWin() {
+    return this.getAliveCivilsNumber() <= this.getAliveMafiaNumber();
+  }
+  private isCivilsWin() {
+    return this.getAliveMafiaNumber() === 0;
+  }
+
+  private gameFinishedCheck() {
+    if (this.isMafiaWin()) {
+      this.gameStatus = GameStatus.Finished;
+      this.result = 'Победила мафия';
+      return;
+    }
+    if (this.isCivilsWin()) {
+      this.gameStatus = GameStatus.Finished;
+      this.result = 'Победили мирные жители';
+      return;
+    }
   }
 }
