@@ -30,7 +30,6 @@ export class GameController {
   @Get('get/:id')
   get(@Param('id') id: string) {
     const game = this.gameService.getGameById(id);
-    console.log(game);
     return game;
   }
 
@@ -55,7 +54,6 @@ export class GameController {
       mafiaNumber,
       hasPolice,
     );
-    console.log(mafiaNumber);
     const playerId = game.getPlayerIdByName(creatorName);
     return {
       game,
