@@ -38,11 +38,13 @@ export class GameController {
     @Body()
     {
       creatorName,
+      playerPhotoUrl,
       civilsNumber,
       mafiaNumber,
       hasPolice,
     }: {
       creatorName: string;
+      playerPhotoUrl: string;
       civilsNumber: number;
       mafiaNumber: number;
       hasPolice: boolean;
@@ -50,6 +52,7 @@ export class GameController {
   ) {
     const game = this.gameService.createGame(
       creatorName,
+      playerPhotoUrl,
       civilsNumber,
       mafiaNumber,
       hasPolice,
@@ -62,8 +65,19 @@ export class GameController {
   }
 
   @Post('join')
-  join(@Body() { gameId, playerName }: { gameId: string; playerName: string }) {
-    const game = this.gameService.joinGame(gameId, playerName);
+  join(
+    @Body()
+    {
+      gameId,
+      playerName,
+      playerPhotoUrl,
+    }: {
+      gameId: string;
+      playerName: string;
+      playerPhotoUrl: string;
+    },
+  ) {
+    const game = this.gameService.joinGame(gameId, playerName, playerPhotoUrl);
     const playerId = game.getPlayerIdByName(playerName);
     return {
       game,

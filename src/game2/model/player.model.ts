@@ -7,6 +7,7 @@ export class Player {
   id: string;
   card: Card;
   status: HealthStatus;
+  photoUrl: string;
 
   constructor(public name: string, public isHost = false) {
     this.id = cryptoRandomString({ length: 8 });
@@ -21,5 +22,9 @@ export class Player {
 
   isAliveCardType(cardType: CardType) {
     return this.status === HealthStatus.Alive && this.card.type === cardType;
+  }
+
+  addPhotoUrl(photoUrl: string) {
+    this.photoUrl = photoUrl;
   }
 }

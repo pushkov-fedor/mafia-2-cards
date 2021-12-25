@@ -11,12 +11,14 @@ export class GameService {
 
   createGame(
     hostName: string,
+    playerPhotoUrl: string,
     civilsNumber: number,
     mafiaNumber: number,
     hasPolice: boolean,
   ) {
     const game = new Game(civilsNumber, mafiaNumber, hasPolice);
     const creator = new Player(hostName, true);
+    creator.addPhotoUrl(playerPhotoUrl);
     game.addPlayer(creator);
     // mock players
     game.addPlayer(new Player('1'));
@@ -29,12 +31,13 @@ export class GameService {
     return game;
   }
 
-  joinGame(gameId: string, playerName: string) {
+  joinGame(gameId: string, playerName: string, playerPhotoUrl: string) {
     const game = this.getGameById(gameId);
     if (game.hasPlayer(playerName)) {
       return game;
     }
     const player = new Player(playerName);
+    player.addPhotoUrl(playerPhotoUrl);
     game.addPlayer(player);
     return game;
   }
