@@ -19,7 +19,7 @@ export class Game {
   gamePhase: GamePhase;
   votingPull: Vote[];
   actions: GameRoundAction[];
-  result: string;
+  result: GameResult;
 
   constructor(
     public civilsNumber: number,
@@ -67,11 +67,6 @@ export class Game {
     this.useVoteTemplate(
       vote,
       () => {
-        if (this.hasAlivePolice()) {
-          this.gamePhase = GamePhase.PoliceTurn;
-        } else {
-          this.gamePhase = GamePhase.Discussion;
-        }
         const voteResultValue = this.getVoteResultValue();
         const player = this.getPlayerById(voteResultValue);
         player.status = HealthStatus.Injured;
@@ -79,6 +74,12 @@ export class Game {
         action.killedPlayer = player;
         action.message = 'Был(а) убит(а) ночью мафией';
         this.actions.push(action);
+        if (this.hasAlivePolice()) {
+          this.gamePhase = GamePhase.PoliceTurn;
+        } else {
+          this.gamePhase = GamePhase.Discussion;
+          this.endNight();
+        }
         this.gameFinishedCheck();
       },
       this.getAliveMafiaNumber.bind(this),
@@ -229,12 +230,12 @@ export class Game {
   private gameFinishedCheck() {
     if (this.isMafiaWin()) {
       this.gameStatus = GameStatus.Finished;
-      this.result = 'Победила мафия';
+      this.result = GameResult.MafiaWins;
       return;
     }
     if (this.isCivilsWin()) {
       this.gameStatus = GameStatus.Finished;
-      this.result = 'Победили мирные жители';
+      this.result = GameResult.CivilWins;
       return;
     }
   }
