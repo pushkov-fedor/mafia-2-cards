@@ -10,6 +10,8 @@ import { HealthStatus } from './health-status.enum';
 import cryptoRandomString = require('crypto-random-string');
 import { GameRoundAction } from './game-round-action.model';
 import { HttpException } from '@nestjs/common';
+import { GameAudioPhase } from './game-audio-phase.model';
+import { NEXT_PHASE_TIMEOUT_NUMBER } from '../../constants';
 
 export class Game {
   id: string;
@@ -21,6 +23,7 @@ export class Game {
   votingPull: Vote[];
   actions: GameRoundAction[];
   result: GameResult;
+  gameAudioPhase: GameAudioPhase;
 
   constructor(
     public civilsNumber: number,
@@ -57,7 +60,13 @@ export class Game {
     this.useVoteTemplate(
       vote,
       () => {
-        this.gamePhase = GamePhase.MafiaTurn;
+        this.gameAudioPhase = GameAudioPhase.PlayersSleep;
+        this.nextPhaseTimeout(
+          GamePhase.MafiaTurn,
+          GameAudioPhase.MafiaWakeUp,
+          NEXT_PHASE_TIMEOUT_NUMBER,
+        );
+        // this.gamePhase = GamePhase.MafiaTurn;
       },
       this.getAlivePlayersNumber.bind(this),
       GamePhase.BeforeNight,
@@ -75,11 +84,38 @@ export class Game {
         action.killedPlayer = player;
         action.message = 'Был(а) убит(а) ночью мафией';
         this.actions.push(action);
+        this.gameAudioPhase = GameAudioPhase.MafiaSleep;
         if (this.hasAlivePolice()) {
-          this.gamePhase = GamePhase.PoliceTurn;
+          this.nextPhaseTimeout(
+            GamePhase.PoliceTurn,
+            GameAudioPhase.PoliceWakeUp,
+            NEXT_PHASE_TIMEOUT_NUMBER,
+          );
+          // this.gamePhase = GamePhase.PoliceTurn;
         } else {
-          this.gamePhase = GamePhase.Discussion;
-          this.endNight();
+          if (this.hasPolice) {
+            this.nextPhaseTimeout(
+              GamePhase.PoliceTurn,
+              GameAudioPhase.PoliceWakeUp,
+              NEXT_PHASE_TIMEOUT_NUMBER,
+            );
+            this.nextPhaseTimeout(
+              GamePhase.Discussion,
+              GameAudioPhase.PoliceSleep,
+              3 * NEXT_PHASE_TIMEOUT_NUMBER,
+            );
+            this.nextPhaseTimeout(
+              GamePhase.Discussion,
+              GameAudioPhase.PlayersWakeUp,
+              4 * NEXT_PHASE_TIMEOUT_NUMBER,
+            );
+          } else {
+            this.nextPhaseTimeout(
+              GamePhase.Discussion,
+              GameAudioPhase.PlayersWakeUp,
+              NEXT_PHASE_TIMEOUT_NUMBER,
+            );
+          }
         }
         this.gameFinishedCheck();
       },
@@ -93,7 +129,13 @@ export class Game {
       if (player.status === HealthStatus.Injured) {
         player.status = HealthStatus.Dead;
       }
-      this.gamePhase = GamePhase.Discussion;
+      this.gameAudioPhase = GameAudioPhase.PoliceSleep;
+      this.nextPhaseTimeout(
+        GamePhase.Discussion,
+        GameAudioPhase.PlayersWakeUp,
+        NEXT_PHASE_TIMEOUT_NUMBER,
+      );
+      // this.gamePhase = GamePhase.Discussion;
     });
   }
 
@@ -241,5 +283,16 @@ export class Game {
       this.result = GameResult.CivilWins;
       return;
     }
+  }
+
+  private nextPhaseTimeout(
+    gamePhase: GamePhase,
+    gameAudioPhase: GameAudioPhase,
+    timeoutNumber: number,
+  ) {
+    setTimeout(() => {
+      this.gamePhase = gamePhase;
+      this.gameAudioPhase = gameAudioPhase;
+    }, timeoutNumber);
   }
 }

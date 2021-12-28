@@ -20,13 +20,6 @@ export class GameService {
     const creator = new Player(hostName, true);
     creator.addPhotoUrl(playerPhotoUrl);
     game.addPlayer(creator);
-    // mock players
-    game.addPlayer(new Player('1'));
-    game.addPlayer(new Player('2'));
-    game.addPlayer(new Player('3'));
-    game.addPlayer(new Player('4'));
-    game.addPlayer(new Player('5'));
-    // mock players end
     this.games.push(game);
     return game;
   }
@@ -55,13 +48,6 @@ export class GameService {
   startNight(gameId: string, playerId: string) {
     const game = this.getGameById(gameId);
     game.startNight(new Vote(playerId));
-    // mock players voting
-    game.startNight(new Vote('1'));
-    game.startNight(new Vote('2'));
-    game.startNight(new Vote('3'));
-    game.startNight(new Vote('4'));
-    game.startNight(new Vote('5'));
-    // mock end
   }
 
   mafiaKill(gameId: string, playerId: string, playerVoteValue: string) {
@@ -77,12 +63,6 @@ export class GameService {
   startTrial(gameId: string, playerId: string) {
     const game = this.getGameById(gameId);
     game.startTrial(new Vote(playerId));
-    // mock
-    game.startTrial(new Vote('1'));
-    game.startTrial(new Vote('2'));
-    game.startTrial(new Vote('1'));
-    game.startTrial(new Vote('4'));
-    game.startTrial(new Vote('5'));
   }
 
   civilsKill(gameId: string, playerId: string, playerVoteValue: string) {
