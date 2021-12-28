@@ -93,6 +93,11 @@ export class Game {
           );
           // this.gamePhase = GamePhase.PoliceTurn;
         } else {
+          this.players.forEach((player) => {
+            if (player.status === HealthStatus.Injured) {
+              player.status = HealthStatus.Dead;
+            }
+          });
           if (this.hasPolice) {
             this.nextPhaseTimeout(
               GamePhase.PoliceTurn,
@@ -129,14 +134,13 @@ export class Game {
       if (player.status === HealthStatus.Injured) {
         player.status = HealthStatus.Dead;
       }
-      this.gameAudioPhase = GameAudioPhase.PoliceSleep;
-      this.nextPhaseTimeout(
-        GamePhase.Discussion,
-        GameAudioPhase.PlayersWakeUp,
-        NEXT_PHASE_TIMEOUT_NUMBER,
-      );
-      // this.gamePhase = GamePhase.Discussion;
     });
+    this.gameAudioPhase = GameAudioPhase.PoliceSleep;
+    this.nextPhaseTimeout(
+      GamePhase.Discussion,
+      GameAudioPhase.PlayersWakeUp,
+      NEXT_PHASE_TIMEOUT_NUMBER,
+    );
   }
 
   startTrial(vote: Vote) {
@@ -235,8 +239,8 @@ export class Game {
     return this.votingPull
       .sort(
         (a, b) =>
-          this.votingPull.filter((v) => v === a).length -
-          this.votingPull.filter((v) => v === b).length,
+          this.votingPull.filter((v) => v.value === a.value).length -
+          this.votingPull.filter((v) => v.value === b.value).length,
       )
       .pop().value;
   }
