@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { HealthStatus } from './health-status.enum';
 import cryptoRandomString = require('crypto-random-string');
 import { GameRoundAction } from './game-round-action.model';
+import { HttpException } from '@nestjs/common';
 
 export class Game {
   id: string;

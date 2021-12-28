@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { GameService } from './game.service';
 import { Game2Mock } from './game2.mock';
 
@@ -78,11 +85,15 @@ export class GameController {
     },
   ) {
     const game = this.gameService.joinGame(gameId, playerName, playerPhotoUrl);
-    const playerId = game.getPlayerIdByName(playerName);
-    return {
-      game,
-      playerId,
-    };
+    if (game.hasPlayer(playerName)) {
+      const playerId = game.getPlayerIdByName(playerName);
+      return {
+        game,
+        playerId,
+      };
+    } else {
+      throw new HttpException('Все места заполнены', 500);
+    }
   }
 
   @Post('start')
