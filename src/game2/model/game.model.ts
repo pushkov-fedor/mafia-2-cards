@@ -215,8 +215,10 @@ export class Game {
   }
 
   private hasAlivePolice() {
-    return this.players.some((player) =>
-      player.isAliveCardType(CardType.Police),
+    return this.players.some(
+      (player) =>
+        player.isHealthStatusCardType(HealthStatus.Alive, CardType.Police) ||
+        player.isHealthStatusCardType(HealthStatus.Injured, CardType.Police),
     );
   }
 

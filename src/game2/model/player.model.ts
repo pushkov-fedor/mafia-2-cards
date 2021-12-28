@@ -24,6 +24,10 @@ export class Player {
     return this.status === HealthStatus.Alive && this.card.type === cardType;
   }
 
+  isHealthStatusCardType(healthStatus: HealthStatus, cardType: CardType) {
+    return this.status === healthStatus && this.card.type === cardType;
+  }
+
   addPhotoUrl(photoUrl: string) {
     this.photoUrl = photoUrl;
   }
