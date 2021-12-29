@@ -24,6 +24,7 @@ export class Game {
   actions: GameRoundAction[];
   result: GameResult;
   gameAudioPhase: GameAudioPhase;
+  gameCreatedTimestamp: Date;
 
   constructor(
     public civilsNumber: number,
@@ -39,6 +40,7 @@ export class Game {
     this.players = [];
     this.votingPull = [];
     this.actions = [];
+    this.gameCreatedTimestamp = new Date();
   }
 
   // Публичные методы
@@ -136,6 +138,7 @@ export class Game {
       }
     });
     this.gameAudioPhase = GameAudioPhase.PoliceSleep;
+    this.gamePhase = GamePhase.Discussion;
     this.nextPhaseTimeout(
       GamePhase.Discussion,
       GameAudioPhase.PlayersWakeUp,

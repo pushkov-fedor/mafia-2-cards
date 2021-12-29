@@ -1,4 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { differenceInMinutes } from 'date-fns';
+import { GameStatus } from './model/game-status.enum';
 import { Game } from './model/game.model';
 import { Player } from './model/player.model';
 import { Vote } from './model/vote.model';
@@ -7,8 +9,11 @@ import { Vote } from './model/vote.model';
 export class GameService {
   private games: Game[] = [];
 
-  // Основные методы
+  constructor() {
+    setInterval(() => this.clearGames(), 1000 * 60 * 60);
+  }
 
+  // Основные методы
   createGame(
     hostName: string,
     playerPhotoUrl: string,
@@ -81,5 +86,19 @@ export class GameService {
       );
     }
     return game;
+  }
+
+  clearGames() {
+    const currentTimestamp = new Date();
+    console.log('Games in memory before cleaning: ', this.games.length);
+    this.games = this.games.filter(
+      (game) =>
+        (game.gameStatus === GameStatus.Created ||
+          game.gameStatus === GameStatus.Finished) &&
+        Math.abs(
+          differenceInMinutes(game.gameCreatedTimestamp, currentTimestamp),
+        ) >= 90,
+    );
+    console.log('Games in memory after cleaning: ', this.games.length);
   }
 }
