@@ -1,0 +1,1 @@
+export const NEXT_PHASE_TIMEOUT_NUMBER = 5000;

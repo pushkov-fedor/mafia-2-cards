@@ -1,4 +1,3 @@
 export class Vote {
-  playerName: string;
-  value: string;
+  constructor(public playerName: string, public value?: string) {}
 }

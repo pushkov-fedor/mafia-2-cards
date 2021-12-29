@@ -1,11 +1,12 @@
-import { CardType } from './card-type.enum';
-import { HealthStatus } from './health-status.enum';
+import { Player } from './player.model';
 import cryptoRandomString = require('crypto-random-string');
 
-export class Card {
+export class GameRoundAction {
   id: string;
+  killedPlayer: Player;
+  message: string;
 
-  constructor(public type: CardType) {
+  constructor() {
     this.id = cryptoRandomString({
       length: 6,
       type: 'base64',
