@@ -21,6 +21,7 @@ export class GameService {
     mafiaNumber: number,
     hasPolice: boolean,
   ) {
+    this.createGameCheck(civilsNumber, mafiaNumber);
     const game = new Game(civilsNumber, mafiaNumber, hasPolice);
     const creator = new Player(hostName, true);
     creator.addPhotoUrl(playerPhotoUrl);
@@ -100,5 +101,24 @@ export class GameService {
         ) >= 90,
     );
     console.log('Games in memory after cleaning: ', this.games.length);
+  }
+
+  // Exception checks
+  createGameCheck(numberOfCivils: number, numberOfMafia) {
+    if (numberOfCivils === numberOfMafia) {
+      throw new HttpException(
+        'Мирных жителей должно быть больше, чем мафии',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (numberOfCivils === 0) {
+      throw new HttpException(
+        'Не может быть 0 мирных жителей',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (numberOfMafia === 0) {
+      throw new HttpException('Не может быть 0 мафии', HttpStatus.BAD_REQUEST);
+    }
   }
 }
