@@ -111,6 +111,12 @@ export class GameService {
         HttpStatus.BAD_REQUEST,
       );
     }
+    if (numberOfCivils < numberOfMafia) {
+      throw new HttpException(
+        'Мафии не может быть больше, чем мирных жителей',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     if (numberOfCivils === 0) {
       throw new HttpException(
         'Не может быть 0 мирных жителей',
